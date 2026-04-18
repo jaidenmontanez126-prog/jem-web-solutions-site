@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Let’s Talk | JEM Web Solutions</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav class="navbar">
+    <a href="index.html" class="logo">JEM Web Solutions</a>
+        <div class="nav-links">
+            <a href="index.html">About</a>
+            <a href="work.html">Work</a>
+      <a href="services.html">Pricing</a>
+      <a href="contact.html" class="active">Let's Talk</a>
+      <button id="theme-toggle" class="theme-toggle" type="button">Light</button>
+      <span class="lang-switch active">EN</span>      
+      <a href="spanish-contact.html" class="lang-switch">ES</a>
+        </div>
+  </nav>
+  
+  <section class="contact" id="contact">
+    <section class="contact-me">
+        <div class="contact-image">
+            <img src="contact-photo.jpg" alt="Business owner working" />
+          </div>
+        <div class="contact-form-wrap">
+        <p class="section-label">Contact</p>
+        <h2>Let’s talk about your project</h2>
+        <p class="contact-text">
+          Tell me a little about your business, what you need, and how I can help.
+        </p>
+  
+        <form id="contact-form" class="contact-form" action="https://formspree.io/f/mrerznbo" method="POST">
+        <input type="text" name="name" placeholder="Your name" />
+            <input type="email" name="email" placeholder="Your email" />
+            <input type="text" name="service" placeholder="Your business or service" />
+            <textarea name="project" placeholder="Tell me about your project"></textarea>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    <p id="form-success" style="display:none; margin-top:14px;">Thanks! Your message was sent successfully.</p>
+      </div>
+    </section>
+  </section>
+  <script>
+    const form = document.getElementById("contact-form");
+    const successMessage = document.getElementById("form-success");
+  
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+  
+      const formData = new FormData(form);
+  
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: {
+          Accept: "application/json"
+        }
+      });
+  
+      if (response.ok) {
+        form.reset();
+        successMessage.style.display = "block";
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto | JEM Web Solutions</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="spanish.html" class="logo">JEM Web Solutions</a>
+    <div class="nav-links">
+      <a href="spanish.html">Inicio</a>
+      <a href="spanish-work.html">Trabajo</a>
+      <a href="spanish-services.html">Precios</a>
+      <a href="spanish-contact.html" class="active">Contacto</a>
+      <button id="theme-toggle" class="theme-toggle" type="button">Claro</button> 
+      <a href="contact.html" class="lang-switch">EN</a>
+      <a href="spanish-contact.html" class="lang-switch active">ES</a>
+    </div>
+  </nav>
+
+  <section class="contact" id="contact">
+    <section class="contact-me">
+      <div class="contact-image">
+        <img src="contact-photo.jpg" alt="Business owner working" />
+      </div>
+
+      <div class="contact-form-wrap">
+        <p class="section-label">CONTACTO</p>
+        <h2>Hablemos sobre tu proyecto</h2>
+        <p class="contact-text">
+          Cuéntame un poco sobre tu negocio, lo que necesitas y cómo puedo ayudarte.
+        </p>
+
+        <form id="contact-form" class="contact-form" action="https://formspree.io/f/mrerznbo" method="POST">
+        <input type="text" name="name" placeholder="Tu nombre" />
+          <input type="email" name="email" placeholder="Tu correo electrónico" />
+          <input type="text" name="service" placeholder="Tu negocio o servicio" />
+          <textarea name="project" placeholder="Cuéntame sobre tu proyecto"></textarea>
+          <button type="submit" class="btn">Enviar mensaje</button>
+        </form>
+    <p id="form-success" style="display:none; margin-top:14px;">¡Gracias! Tu mensaje fue enviado con éxito.</p>
+      </div>
+    </section>
+  </section>
+  <script>
+    const form = document.getElementById("contact-form");
+    const successMessage = document.getElementById("form-success");
+  
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+  
+      const formData = new FormData(form);
+  
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: {
+          Accept: "application/json"
+        }
+      });
+  
+      if (response.ok) {
+        form.reset();
+        successMessage.style.display = "block";
+      } else {
+        alert("Algo salió mal. Inténtalo de nuevo.");
+      }
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
