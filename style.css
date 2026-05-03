@@ -580,3 +580,7 @@ isolation: isolate;
     color: var(--text-soft);
     max-width: 820px;
   }
+
+  .pricing-section {
+    display: none;
+  }
