@@ -595,3 +595,49 @@ isolation: isolate;
     flex-direction: column;
     gap: 32px;
   }
+
+  /* Mobile layout */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 20px;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+  }
+
+  .hero {
+    padding: 32px 20px;
+    }
+
+  .hero h1 {
+    font-size: clamp(2.7rem, 12vw, 4rem);
+    line-height: 1.05;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .about-section {
+    padding: 40px 20px 80px;
+  }
+
+  .about-text {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
