@@ -667,4 +667,6 @@ isolation: isolate;
   display: flex !important;
   flex-direction: column;
   position: fixed;
+  top: 80px;
+  right: 20px;
 }
