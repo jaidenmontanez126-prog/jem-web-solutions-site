@@ -604,8 +604,7 @@ isolation: isolate;
   }
 
   .nav-links {
-    display: none;
-}
+    display: none !important;}
 
   .hero {
     padding: 32px 20px;
