@@ -641,3 +641,24 @@ isolation: isolate;
     line-height: 1.7;
   }
 }
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid rgba(255,255,255,.2);
+  color: var(--text-main);
+  font-size: 1.5rem;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+}
