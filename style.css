@@ -662,6 +662,7 @@ isolation: isolate;
     flex-direction: column;
     position: fixed;
     right: 20px;
+    top: 190px;
     background: var(--bg-main);
     width: 220px;
     z-index: 1000;
