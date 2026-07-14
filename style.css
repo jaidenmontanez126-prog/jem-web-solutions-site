@@ -663,10 +663,11 @@ isolation: isolate;
   }
 
 
-.nav-links.show {
-  display: flex !important;
-  flex-direction: column;
-  position: fixed;
-  top: 110px;  
-  right: 20px;
+  .nav-links.show {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: 110px;
+    right: 20px;
+    background: #111827;
 }
