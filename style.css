@@ -661,4 +661,9 @@ isolation: isolate;
   .nav-links {
     display: none !important;
   }
+
+
+.nav-links.show {
+  display: flex !important;
+  flex-direction: column;
 }

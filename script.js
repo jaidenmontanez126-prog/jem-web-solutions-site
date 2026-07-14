@@ -51,3 +51,14 @@ if (themeToggle) {
     themeToggle.textContent = getToggleLabel(isLightMode);
   });
 }
+
+const menuToggle = document.getElementById("menu-toggle-button");
+const primaryNavigation = document.getElementById("primary-navigation");
+
+if (menuToggle && primaryNavigation) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = primaryNavigation.classList.toggle("show");
+
+    menuToggle.setAttribute("aria-expanded", isOpen);
+    menuToggle.innerHTML = isOpen ? "&times;" : "☰";});
+  }
