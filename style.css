@@ -666,4 +666,5 @@ isolation: isolate;
 .nav-links.show {
   display: flex !important;
   flex-direction: column;
+  position: absolute;
 }
