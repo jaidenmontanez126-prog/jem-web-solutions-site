@@ -669,5 +669,4 @@ isolation: isolate;
     position: fixed;
     top: 110px;
     right: 20px;
-    background: #111827;
-}
+    background: var(--bg-main);}
