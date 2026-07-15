@@ -661,23 +661,23 @@ isolation: isolate;
     display: flex !important;
     flex-direction: column;
     position: fixed;
-    top: 90px;
-    right: 20px;
-    width: calc(100% - 40px);
-    max-width: 320px;
+    top: 0;    
+    left: 0;    
+    width: 100%;    
+    max-width: none;    
     background: var(--bg-main);
     border: 1px solid rgba(255,255,255,.12);
-    border-radius: 16px;
-    padding: 18px;
-    gap: 12px;
-    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+    border-radius: 0;    
+    padding: 24px;    
+    gap: 0;    
+    box-shadow: none;    
     z-index: 1000;
   }
 
   .nav-links.show a {
-    width: 100%;
+    display: block;    
     text-align: center;
-    padding: 14px;
-    border-radius: 12px;
-  }
+    padding: 22px 0;    
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255,255,255,.12);  }
 }
