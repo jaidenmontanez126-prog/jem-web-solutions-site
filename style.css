@@ -663,7 +663,7 @@ isolation: isolate;
     position: fixed;
     top: 0;    
     left: 0;    
-    width: 100%;    
+    width: 220px;    
     max-width: none;    
     background: var(--bg-main);
     border: 1px solid rgba(255,255,255,.12);
