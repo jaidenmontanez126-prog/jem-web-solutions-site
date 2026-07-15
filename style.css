@@ -647,6 +647,7 @@ isolation: isolate;
   cursor: pointer;
 }
 
+
 @media (max-width: 900px) {
   .menu-toggle {
     display: block;
@@ -656,14 +657,27 @@ isolation: isolate;
     display: none !important;
   }
 
-
   .nav-links.show {
     display: flex !important;
     flex-direction: column;
     position: fixed;
+    top: 90px;
     right: 20px;
-    top: 190px;
+    width: calc(100% - 40px);
+    max-width: 320px;
     background: var(--bg-main);
-    width: 220px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px;
+    padding: 18px;
+    gap: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
     z-index: 1000;
+  }
+
+  .nav-links.show a {
+    width: 100%;
+    text-align: center;
+    padding: 14px;
+    border-radius: 12px;
+  }
 }
