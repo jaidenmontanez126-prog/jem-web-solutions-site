@@ -677,7 +677,7 @@ isolation: isolate;
     position:fixed;
     top:90px;
     right: 16px;    
-    width:320px;
+    width: 260px;    
     max-width:calc(100vw - 48px);
 
     background:#0d1421;
