@@ -328,15 +328,26 @@ html {
     min-height: 260px;
     }
   
-  .contact-form-wrap {
-    background-color: var(--bg-card);    
-    border-radius: 20px;
-    padding: 28px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    border: 1px solid transparent;
-    position: relative;
-overflow: hidden;
-isolation: isolate;
+    .contact-form-wrap {
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+  
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: 20px;
+  
+      padding: 28px;
+  
+      transition: transform .25s ease,
+                  box-shadow .25s ease,
+                  border-color .25s ease;
+  
+      box-shadow: 0 20px 60px rgba(0,0,0,.12);
+  
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+  }
   }
   .contact-form-wrap:hover {
     transform: translateY(-6px);
