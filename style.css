@@ -727,21 +727,21 @@ html {
   }
 
 }
-.menu-overlay{
-  position:fixed;
-  inset:0;
-  733  background: rgba(0,0,0,.55);
-  734  backdrop-filter: blur(12px);
-  735  -webkit-backdrop-filter: blur(12px);
-  opacity:0;
-  visibility:hidden;
-  transition:.25s;
-  z-index:1998;
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s;
+  z-index: 1998;
 }
 
-.menu-overlay.show{
-  opacity:1;
-  visibility:visible;
+.menu-overlay.show {
+  opacity: 1;
+  visibility: visible;
 }
 
 body.light-mode .nav-links.show {
