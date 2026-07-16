@@ -66,7 +66,7 @@ if (menuToggle && primaryNavigation) {
   menuToggle.addEventListener("click", () => {
     const isOpen = primaryNavigation.classList.toggle("show");
     menuOverlay.classList.toggle("show", isOpen);
-    
+
     menuToggle.setAttribute("aria-expanded", String(isOpen));
     menuToggle.innerHTML = isOpen ? "&times;" : "☰";
   });
@@ -74,4 +74,5 @@ if (menuToggle && primaryNavigation) {
   primaryNavigation.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeMenu);
   });
+  menuOverlay.addEventListener("click", closeMenu);
 }
