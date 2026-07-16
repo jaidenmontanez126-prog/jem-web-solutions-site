@@ -735,3 +735,9 @@ body.light-mode .nav-links.show {
   background: #f5f7fb;
   border-color: rgba(17, 24, 39, 0.12);
 }
+
+body.light-mode .nav-links.show a,
+body.light-mode .nav-links.show .theme-toggle,
+body.light-mode .nav-links.show .lang-switch {
+  color: #111827;
+}
