@@ -730,3 +730,8 @@ isolation: isolate;
   opacity:1;
   visibility:visible;
 }
+
+body.light-mode .nav-links.show {
+  background: #f5f7fb;
+  border-color: rgba(17, 24, 39, 0.12);
+}
