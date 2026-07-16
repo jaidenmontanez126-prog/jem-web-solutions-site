@@ -65,6 +65,7 @@ if (menuToggle && primaryNavigation) {
 
   menuToggle.addEventListener("click", () => {
     const isOpen = primaryNavigation.classList.toggle("show");
+    document.body.style.overflow = isOpen ? "hidden" : "";
     menuOverlay.classList.toggle("show", isOpen);
 
     menuToggle.setAttribute("aria-expanded", String(isOpen));
