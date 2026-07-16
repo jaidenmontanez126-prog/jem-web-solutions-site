@@ -676,7 +676,7 @@ isolation: isolate;
     flex-direction:column;
     position:fixed;
     top:90px;
-    right:24px;
+    right: 16px;    
     width:320px;
     max-width:calc(100vw - 48px);
 
