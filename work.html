@@ -7,13 +7,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <nav class="navbar">
-      <a href="index.html" class="logo">
+  <nav class="navbar" id="navbar">      
+    <a href="index.html" class="logo">
         <img src="./Logos/jem-logo-dark-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-dark">
         <img src="./Logos/jem-logo-light-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-light">
       </a>        
-      <div class="nav-links">
-          <a href="index.html#about">About</a>
+      <button
+    class="menu-toggle"
+    id="menu-toggle-button"
+    type="button"
+    aria-label="Open navigation"
+    aria-controls="primary-navigation"
+    aria-expanded="false">
+    ☰
+</button>
+      <div id="primary-navigation" class="nav-links">          
+        <a href="index.html#about">About</a>
           <a href="work.html" class="active">Work</a>
           <a href="services.html">Pricing</a>
           <a href="contact.html">Let's Talk</a>
