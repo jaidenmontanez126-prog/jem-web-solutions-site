@@ -62,3 +62,11 @@ if (menuToggle && primaryNavigation) {
     menuToggle.setAttribute("aria-expanded", isOpen);
     menuToggle.innerHTML = isOpen ? "&times;" : "☰";});
   }
+
+  primaryNavigation.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      primaryNavigation.classList.remove("show");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.innerHTML = "☰";
+    });
+  });
