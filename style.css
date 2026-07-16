@@ -714,3 +714,19 @@ isolation: isolate;
   }
 
 }
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  opacity:0;
+  visibility:hidden;
+  transition:.25s;
+  z-index:1998;
+}
+
+.menu-overlay.show{
+  opacity:1;
+  visibility:visible;
+}
