@@ -730,9 +730,9 @@ html {
 .menu-overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  733  background: rgba(0,0,0,.35);
+  734  backdrop-filter: blur(28px);
+  735  -webkit-backdrop-filter: blur(28px);
   opacity:0;
   visibility:hidden;
   transition:.25s;
