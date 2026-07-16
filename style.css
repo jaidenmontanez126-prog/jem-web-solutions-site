@@ -741,3 +741,7 @@ body.light-mode .nav-links.show .theme-toggle,
 body.light-mode .nav-links.show .lang-switch {
   color: #111827;
 }
+
+body.light-mode .menu-toggle {
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.18);
+}
