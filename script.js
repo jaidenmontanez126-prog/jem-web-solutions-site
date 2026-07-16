@@ -56,17 +56,20 @@ const menuToggle = document.getElementById("menu-toggle-button");
 const primaryNavigation = document.getElementById("primary-navigation");
 
 if (menuToggle && primaryNavigation) {
+  const closeMenu = () => {
+    primaryNavigation.classList.remove("show");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.innerHTML = "☰";
+  };
+
   menuToggle.addEventListener("click", () => {
     const isOpen = primaryNavigation.classList.toggle("show");
 
-    menuToggle.setAttribute("aria-expanded", isOpen);
-    menuToggle.innerHTML = isOpen ? "&times;" : "☰";});
-  }
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    menuToggle.innerHTML = isOpen ? "&times;" : "☰";
+  });
 
   primaryNavigation.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      primaryNavigation.classList.remove("show");
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.innerHTML = "☰";
-    });
+    link.addEventListener("click", closeMenu);
   });
+}
