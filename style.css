@@ -743,5 +743,6 @@ body.light-mode .nav-links.show .lang-switch {
 }
 
 body.light-mode .menu-toggle {
-  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.18);
-}
+  box-shadow:
+  0 6px 18px rgba(17, 24, 39, 0.18),
+  0 0 0 1px rgba(255,255,255,.08);
