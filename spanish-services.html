@@ -8,19 +8,31 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="spanish.html" class="logo">
-      <img src="./Logos/jem-logo-dark-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-dark">
-      <img src="./Logos/jem-logo-light-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-light">
-    </a>    
-    <div class="nav-links">
-      <a href="spanish.html">Inicio</a>
-      <a href="spanish-work.html">Trabajo</a>
-      <a href="spanish-services.html" class="active">Precios</a>
-      <a href="spanish-contact.html">Contacto</a>
-      <button id="theme-toggle" class="theme-toggle" type="button">Claro</button>
-      <a href="services.html" class="lang-switch">EN</a>
-      <a href="spanish-services.html" class="lang-switch active">ES</a>
+      <div class="logo">
+        <img src="./Logos/jem-logo-dark-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-dark">      
+        <img src="./Logos/jem-logo-light-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-light">    
+      </div>        
+      <button
+    class="menu-toggle"
+    id="menu-toggle-button"
+    type="button"
+    aria-label="Open navigation"
+    aria-controls="primary-navigation"
+    aria-expanded="false"
+    >
+    ☰
+    </button>
+    <div id="menu-overlay" class="menu-overlay"></div>
+    <div id="primary-navigation" class="nav-links">          
+      <a href="spanish.html" class="active">Inicio</a>        
+      <a href="spanish-work.html">Trabajo</a>        
+      <a href="spanish-services.html">Precios</a>        
+      <a href="spanish-contact.html">Contacto</a>        
+      <button id="theme-toggle" class="theme-toggle" type="button">Claro</button>        
+      <a href="index.html" class="lang-switch">EN</a>        
+      <span class="lang-switch active">ES</span>          
     </div>
+
   </nav>
 
   <section class="pricing-section">
