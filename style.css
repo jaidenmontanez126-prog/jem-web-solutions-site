@@ -362,8 +362,7 @@ html {
   .contact-form-wrap h2 {
     font-size: 2.4rem;
     margin-bottom: 18px;
-    color: #ffffff;
-}
+    color: #ffffff !important;}
   
   .contact-text {
     color: var(--text-soft);    
