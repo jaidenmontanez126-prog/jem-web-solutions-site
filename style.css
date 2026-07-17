@@ -609,8 +609,7 @@ html {
   }
 
   .nav-links {
-    display: none !important;}
-
+    display: none;
   .hero {
     padding: 32px 20px;
     }
