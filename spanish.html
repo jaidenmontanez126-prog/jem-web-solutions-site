@@ -8,20 +8,30 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="spanish.html" class="logo">
-      <img src="./Logos/jem-logo-dark-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-dark">
-      <img src="./Logos/jem-logo-light-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-light">
-    </a>    
-    <div class="nav-links">
-      <a href="spanish.html" class="active">Inicio</a>
-      <a href="spanish-work.html">Trabajo</a>
-      <a href="spanish-services.html">Precios</a>
-      <a href="spanish-contact.html">Contacto</a>
-      <button id="theme-toggle" class="theme-toggle" type="button">Claro</button>
-      <a href="index.html" class="lang-switch">EN</a>
-      <a href="spanish.html" class="lang-switch active">ES</a>
-    </div>
-  </nav>
+  <div class="logo">
+    <img src="./Logos/jem-logo-dark-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-dark">      
+    <img src="./Logos/jem-logo-light-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-light">    
+  </div>        
+  <button
+class="menu-toggle"
+id="menu-toggle-button"
+type="button"
+aria-label="Open navigation"
+aria-controls="primary-navigation"
+aria-expanded="false"
+>
+☰
+</button>
+<div id="menu-overlay" class="menu-overlay"></div>
+<div id="primary-navigation" class="nav-links">          
+  <a href="spanish.html" class="active">Inicio</a>        
+  <a href="spanish-work.html">Trabajo</a>        
+  <a href="spanish-services.html">Precios</a>        
+  <a href="spanish-contact.html">Contacto</a>        
+  <button id="theme-toggle" class="theme-toggle" type="button">Claro</button>        
+  <a href="index.html" class="lang-switch">EN</a>        
+  <span class="lang-switch active">ES</span>          
+</div>
 
   <header class="hero">
     <p class="eyebrow">Diseño web para pequeños negocios</p>
@@ -30,8 +40,7 @@
       Sitios web limpios y modernos para pequeños negocios que quieren una presencia más fuerte y una imagen más profesional.
     </p>
     <div class="hero-buttons">
-      <a href="work.html" class="btn">Ver mi trabajo</a>
-      <a href="contact.html" class="btn btn-secondary">Trabajemos juntos</a>
+      <a href="spanish-contact.html" class="btn btn-secondary">Trabajemos juntos</a>      
     </div>
   </header>
   <section class="about-section" id="about">
