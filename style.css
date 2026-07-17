@@ -348,7 +348,6 @@ html {
       overflow: hidden;
       isolation: isolate;
   }
-  }
   .contact-form-wrap:hover {
     transform: translateY(-6px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
@@ -360,15 +359,17 @@ html {
  
  
   .contact-form-wrap h1,
-  .contact-form-wrap h2 {    
-    font-size: 2.4rem;
-    margin-bottom: 18px;
-    color: #111827 !important;  
+  .contact-form-wrap h2 {
+      font-size: 2.4rem;
+      margin-bottom: 18px;
+      color: #111827 !important;
+  }
+  
   .contact-text {
-    color: var(--text-soft);    
-    line-height: 1.7;
-    margin-bottom: 28px;
-    max-width: 560px;
+      color: var(--text-soft);
+      line-height: 1.7;
+      margin-bottom: 28px;
+      max-width: 560px;
   }
   
   .contact-form {
@@ -610,9 +611,11 @@ html {
 
   .nav-links {
     display: none;
-  .hero {
+}
+
+.hero {
     padding: 32px 20px;
-    }
+}
 
   .hero h1 {
     font-size: clamp(2.7rem, 12vw, 4rem);
