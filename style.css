@@ -329,7 +329,7 @@ html {
     }
   
     .contact-form-wrap {
-      background: #ffffff;      
+      background: var(--surface);      
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
   
