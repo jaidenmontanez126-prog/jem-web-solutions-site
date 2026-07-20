@@ -117,8 +117,13 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 32px;
+    padding: 32px 40px;    
     width: 100%;
+    }
+    .navbar .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
   
     .logo {
