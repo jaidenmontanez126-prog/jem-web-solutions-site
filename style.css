@@ -278,19 +278,21 @@ html {
     display: flex;
     gap: 24px;
     flex-wrap: wrap;
-  }
+}
   
   .project-card {
-    background-color: var(--bg-card);    
-    padding: 28px;
-    border-radius: 16px;
+    background-color: var(--bg-card);
+    padding: 40px;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.06);
     flex: 1;
     min-width: 250px;
   }
   
   .project-card h3 {
     font-size: 1.25rem;
-    margin-bottom: 12px;
+    margin-top: 8px;
+    margin-bottom: 18px;    
     color: var(--text-main); 
   }
   
