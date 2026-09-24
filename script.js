@@ -77,3 +77,12 @@ if (menuToggle && primaryNavigation) {
   });
   menuOverlay.addEventListener("click", closeMenu);
 }
+
+const phoneCard = document.getElementById("phoneContactCard");
+const phonePopup = document.getElementById("phoneChoicePopup");
+
+if (phoneCard && phonePopup) {
+  phoneCard.addEventListener("click", () => {
+    phonePopup.classList.toggle("show");
+  });
+}
