@@ -33,7 +33,7 @@ html {
     color: var(--text-main);
   }
   #hero-title {
-    opacity: 0;
+    opacity: 1;    
     transform: translateY(20px);
     animation: heroFade 0.8s ease forwards;
     max-width: 520px;
@@ -119,6 +119,9 @@ html {
     align-items: center;
     padding: 32px 56px;    
     width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     }
     .navbar .nav-links {
       display: flex;
@@ -301,7 +304,7 @@ html {
     line-height: 1.6;
   }
   .project-card .btn {
-    margin-top: 14px;
+    margin-top: 8px;
   }
   .card,
   .project-card {
@@ -585,9 +588,8 @@ html {
 
   .about-section {
     padding: 40px 32px 20px;
-    max-width: 900px;
-  }@media
-  
+    max-width: 1100px;  
+  }
   .about-text {
     font-size: 1.05rem;
     line-height: 1.8;
@@ -1362,4 +1364,235 @@ body.light-mode .phone-choice-popup a {
 
 body.light-mode .phone-choice-popup a:hover {
   background: rgba(17,24,39,0.09);
+}
+
+/* Meet the Owner */
+.about-content {
+  display: grid;
+  grid-template-columns: 520px 380px;
+  gap: 45px;
+  align-items: start;
+}
+
+.owner-photo {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+}
+
+.about-info {
+  grid-column: 1;
+}
+
+.owner-photo {
+  grid-column: 2;
+}
+
+/* Final Meet the Owner layout */
+.about-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 32px;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 100px;  
+  align-items: center;
+}
+
+.about-info {
+  grid-column: 1;
+}
+
+.owner-photo {
+  grid-column: 2;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+}
+
+@media (max-width: 900px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .about-info,
+  .owner-photo {
+    grid-column: 1;
+  }
+
+  .owner-photo {
+    max-width: 380px;
+  }
+}
+
+/* FINAL ABOUT / MEET THE OWNER LAYOUT */
+.about-section {
+  max-width: 1450px;
+  margin: 0;
+  padding: 40px 34px 70px;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 430px 380px;  
+  gap: 40px;
+  align-items: start;  
+  justify-content: start;
+}
+
+.about-info {
+  grid-column: 1;
+  max-width: 430px;
+}
+
+.owner-photo {
+  grid-column: 2;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+}
+
+@media (max-width: 900px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .about-info,
+  .owner-photo {
+    grid-column: 1;
+  }
+
+  .owner-photo {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+}
+
+/* About text spacing */
+.about-info .eyebrow {
+  margin-bottom: 22px;
+}
+
+.about-info h2 {
+  margin-bottom: 12px;
+}
+
+.about-info h3 {
+  margin-bottom: 6px;
+}
+
+
+
+.about-info .owner-title {
+  margin-bottom: 12px;
+}
+
+.about-info .about-text {
+  margin-top: 8px;
+}
+
+.about-info {
+  max-width: 520px;
+}
+
+.about-info .about-text {
+  line-height: 1.45;
+}
+
+.photo-credit {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 14px;
+  color: #a8a8a8;
+}
+
+.photo-credit > span {
+  display: block;
+  margin-bottom: 6px;
+  color: #d8d8d8;
+}
+
+.photo-credit-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.photo-credit-links a {
+  color: #a8a8a8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.photo-credit-links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.photo-credit {
+  grid-column: 2;
+  margin-top: 6px;
+}
+
+.instagram-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* Premium photographer credit */
+.photo-credit-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #b8b8b8;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.photo-credit-links a:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+/* Spanish homepage hero desktop fix */
+@media (min-width: 769px) {
+  html[lang="es"] .hero {
+    max-width: 900px;
+  }
+
+  html[lang="es"] .hero h1 {
+    max-width: 900px;    
+    font-size: clamp(3rem, 4vw, 4.5rem);
+    line-height: 1.05;
+  }
+
+  html[lang="es"] .hero-text {
+    max-width: 720px;
+  }
 }
