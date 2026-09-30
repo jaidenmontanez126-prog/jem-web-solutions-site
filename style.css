@@ -1433,6 +1433,10 @@ body.light-mode .phone-choice-popup a:hover {
   }
 }
 
+
+
+@media (min-width: 901px) {
+
 /* FINAL ABOUT / MEET THE OWNER LAYOUT */
 .about-section {
   max-width: 1450px;
@@ -1462,10 +1466,14 @@ body.light-mode .phone-choice-popup a:hover {
   border-radius: 18px;
 }
 
+}
+
 @media (max-width: 900px) {
   .about-content {
+    display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
+    width: 100%;
   }
 
   .about-info,
@@ -1503,7 +1511,8 @@ body.light-mode .phone-choice-popup a:hover {
 }
 
 .about-info {
-  max-width: 520px;
+  max-width: none;
+  width: 100%;
 }
 
 .about-info .about-text {
@@ -1594,5 +1603,31 @@ body.light-mode .phone-choice-popup a:hover {
 
   html[lang="es"] .hero-text {
     max-width: 720px;
+  }
+}
+
+@media (max-width: 900px) {
+  html[lang="en"] .about-section .about-content {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  html[lang="en"] .about-section .about-info {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  html[lang="en"] .about-section .about-text {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  html[lang="en"] .about-section .owner-photo {
+    display: block !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    margin: 30px auto 0 !important;
   }
 }
