@@ -121,8 +121,8 @@ html {
     width: 100%;
     position: sticky;
     top: 0;
-    z-index: 1000;
-    }
+    z-index: 2000;    
+  }
     .navbar .nav-links {
       display: flex;
       align-items: center;
@@ -705,7 +705,9 @@ html {
     width: 260px;    
     max-width:calc(100vw - 48px);
 
-    background: transparent;    
+    background: rgba(0, 0, 0, 0.15);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);    
     border:1px solid rgba(255,255,255,.08);
     border-radius:24px;
 
@@ -714,7 +716,7 @@ html {
 
     box-shadow:0 25px 60px rgba(0,0,0,.45);
 
-    z-index:1999;
+    z-index: 2001;  
   }
 
   .nav-links.show a{
@@ -743,12 +745,12 @@ html {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  opacity: 0;
+  backdrop-filter: none;  
+  -webkit-backdrop-filter: none;  opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s;
   z-index: 1998;
+  pointer-events: none;
 }
 
 .menu-overlay.show {
@@ -1630,4 +1632,26 @@ body.light-mode .phone-choice-popup a:hover {
     max-width: 380px !important;
     margin: 30px auto 0 !important;
   }
+}
+
+/* Mobile navigation click fix */
+@media (max-width: 900px) {
+
+  .menu-overlay {
+    pointer-events: auto !important;
+  }
+
+  .nav-links.show {
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+  }
+
+  .nav-links.show a,
+  .nav-links.show button,
+  .nav-links.show .lang-switch {
+    position: relative;
+    z-index: 1;
+    pointer-events: auto !important;
+  }
+
 }
