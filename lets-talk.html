@@ -28,7 +28,8 @@
 </button>
 <div id="primary-navigation" class="nav-links">            
   <a href="index.html">About</a>
-  <a href="projects.html">Projects</a>      
+  <a href="projects.html">Projects</a>
+  <a href="website-styles.html">Website Styles</a>
   <a href="services.html">Services</a>  
   <a href="lets-talk.html" class="active">Let's Talk</a>      
   <button id="theme-toggle" class="theme-toggle" type="button">Light</button>
@@ -37,7 +38,7 @@
         </div>
   </nav>
   <div id="menu-overlay" class="menu-overlay"></div>
-  
+
   <section class="contact" id="contact">
     <section class="contact-me">
         <div class="contact-image">
@@ -49,7 +50,7 @@
         <p class="contact-text">
           Tell me a little about your business, what you need, and how I can help.
         </p>
-  
+
         <form id="contact-form" class="contact-form" action="https://formspree.io/f/mrerznbo" method="POST">
         <input type="text" name="name" placeholder="Your name" />
             <input type="email" name="email" placeholder="Your email" />
@@ -61,19 +62,19 @@
 
           <div class="contact-methods">
             <p class="contact-group-title">Call or message me</p>
-        
+
             <div class="contact-method-grid">
-        
+
               <div class="contact-method-card phone-contact-card" id="phoneContactCard">                
                 <div class="contact-option-icon">
                   <i class="fa-solid fa-phone"></i>
                 </div>
-        
+
                 <div>
                   <h3>Phone</h3>
                   <p>Speak with me directly</p>
                 </div>
-        
+
                 <span class="contact-arrow">→</span>
               </div>
 
@@ -81,57 +82,57 @@
                 <a href="tel:+19598881096">Call Me</a>
                 <a href="sms:+19598881096">Text Me</a>
               </div>
-            
+
               <a href="https://wa.me/19598881096" class="contact-method-card">                
                 <div class="contact-option-icon">
                   <i class="fa-brands fa-whatsapp"></i>
                 </div>
-        
+
                 <div>
                   <h3>WhatsApp</h3>
                   <p>Start a conversation</p>
                 </div>
-        
+
                 <span class="contact-arrow">→</span>
               </a>
-        
+
             </div>
           </div>
-        
+
           <div class="contact-socials">
             <p class="contact-group-title">Follow JEM Web Solutions</p>
-        
+
             <div class="social-links">
-        
+
               <a href="https://www.instagram.com/jemwebsolutionsllc/" class="social-link" target="_blank" rel="noopener noreferrer">                
                 <div class="contact-option-icon">
                   <i class="fa-brands fa-instagram"></i>
                 </div>
-        
+
                 <div>
                   <h3>Instagram</h3>
                   <p>See my latest work</p>
                 </div>
-        
+
                 <span class="contact-arrow">→</span>
               </a>
-        
+
               <a href="https://www.facebook.com/profile.php?id=61592599111129" class="social-link" target="_blank" rel="noopener noreferrer">                
                 <div class="contact-option-icon">
                   <i class="fa-brands fa-facebook-f"></i>
                 </div>
-        
+
                 <div>
                   <h3>Facebook</h3>
                   <p>Follow JEM Web Solutions</p>
                 </div>
-        
+
                 <span class="contact-arrow">→</span>
               </a>
-        
+
             </div>
           </div>
-        
+
         </div>
     <p id="form-success" style="display:none; margin-top:14px;">Thanks! Your message was sent successfully.</p>
       </div>
@@ -140,12 +141,12 @@
   <script>
     const form = document.getElementById("contact-form");
     const successMessage = document.getElementById("form-success");
-  
+
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-  
+
       const formData = new FormData(form);
-  
+
       const response = await fetch(form.action, {
         method: form.method,
         body: formData,
@@ -153,7 +154,7 @@
           Accept: "application/json"
         }
       });
-  
+
       if (response.ok) {
         form.reset();
         successMessage.style.display = "block";

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website Styles | JEM Web Solutions</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">      
+    <a href="index.html" class="logo">
+        <img src="./Logos/jem-logo-dark-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-dark">
+        <img src="./Logos/jem-logo-light-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-light">
+      </a>        
+      <button
+    class="menu-toggle"
+    id="menu-toggle-button"
+    type="button"
+    aria-label="Open navigation"
+    aria-controls="primary-navigation"
+    aria-expanded="false">
+    ☰
+</button>
+      <div id="primary-navigation" class="nav-links">          
+
+        <a href="index.html#about">About</a>
+        <a href="projects.html">Projects</a>
+  <a href="website-styles.html" class="active">Website Styles</a>
+        <a href="services.html">Services</a>          
+          <a href="lets-talk.html">Let's Talk</a>          
+          <button id="theme-toggle" class="theme-toggle" type="button">Light</button>
+          <span class="lang-switch active">EN</span>         
+          <a href="spanish-styles.html" class="lang-switch">ES</a>
+                </div>
+      </nav>
+
+      <main class="website-styles" id="website-styles" aria-labelledby="styles-title"><p class="section-label">Imagine the possibilities</p><h1 id="styles-title">Explore Website Styles</h1><p class="styles-intro">Picture what your website could look like. Explore three sample designs, each with its own personality. Every project is customized to your brand.</p><div class="styles-grid"><article class="style-card"><div class="style-browser"><span aria-hidden="true">● ● ●</span><span>Evergreen Outdoor Co.</span></div><iframe src="demos/local.html" title="Local Services concept preview" loading="lazy" tabindex="-1" inert></iframe><div class="style-card-info"><p class="section-label">Concept Demo</p><h3>Local Services</h3><p class="style-features">Multi-page demo · Services, gallery, FAQs &amp; estimate form</p><a class="btn btn-secondary" href="demos/local.html">View Demo <span class="style-sr-only">: Local Services</span>&rarr;</a></div></article><article class="style-card"><div class="style-browser"><span aria-hidden="true">● ● ●</span><span>Sunday Crumb</span></div><iframe src="demos/bakery.html" title="Restaurant & Bakery concept preview" loading="lazy" tabindex="-1" inert></iframe><div class="style-card-info"><p class="section-label">Concept Demo</p><h3>Restaurant & Bakery</h3><a class="btn btn-secondary" href="demos/bakery.html">View Demo <span class="style-sr-only">: Restaurant & Bakery</span>&rarr;</a></div></article><article class="style-card"><div class="style-browser"><span aria-hidden="true">● ● ●</span><span>Gather Community</span></div><iframe src="demos/ministry.html" title="Ministry & Community concept preview" loading="lazy" tabindex="-1" inert></iframe><div class="style-card-info"><p class="section-label">Concept Demo</p><h3>Ministry & Community</h3><a class="btn btn-secondary" href="demos/ministry.html">View Demo <span class="style-sr-only">: Ministry & Community</span>&rarr;</a></div></article></div><div class="styles-cta"><h3>See a style you like? Let’s make it yours.</h3><a class="btn" href="lets-talk.html">Let's Talk</a></div></main>
+<footer class="footer"><p>© 2026 JEM Web Solutions</p></footer>
+<div id="menu-overlay" class="menu-overlay"></div>
+<script src="script.js"></script>
+</body>
+</html>
