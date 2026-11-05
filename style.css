@@ -1368,6 +1368,82 @@ body.light-mode .phone-choice-popup a:hover {
   background: rgba(17,24,39,0.09);
 }
 
+/* Google Reviews: uses the same theme colors and rounded cards as the site. */
+.google-reviews {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px 48px;
+}
+
+.google-reviews-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-bottom: 20px;
+}
+
+.google-reviews h2 {
+  font-size: 1.75rem;
+  color: var(--text-main);
+}
+
+.google-reviews-link {
+  color: var(--text-main);
+  font-size: 0.95rem;
+  text-underline-offset: 4px;
+}
+
+.google-reviews-link:focus-visible {
+  outline: 2px solid var(--text-main);
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+
+.google-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 20px;
+}
+
+.google-review {
+  min-width: 0;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.google-review-rating {
+  color: var(--text-main);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.google-review blockquote {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.google-review figcaption {
+  margin-top: 16px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+@media (min-width: 901px) {
+  .google-reviews {
+    margin: 0;
+    padding-right: 34px;
+    padding-left: 34px;
+  }
+}
+
 /* Meet the Owner */
 .about-content {
   display: grid;
