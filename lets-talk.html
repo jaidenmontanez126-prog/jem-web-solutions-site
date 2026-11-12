@@ -1,73 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Let’s Talk | JEM Web Solutions</title>
-  <link rel="stylesheet" href="style.css" />
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-/>
-</head>
-<body>
-<nav class="navbar">
-  <a href="index.html" class="logo">
-    <img src="./Logos/jem-logo-dark-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-dark">
-    <img src="./Logos/jem-logo-light-navbar.png" alt="JEM Web Solutions LLC logo" class="logo-light">
-  </a>        
-  <button
-  class="menu-toggle"
-  id="menu-toggle-button"
-  type="button"
-  aria-label="Open navigation"
-  aria-controls="primary-navigation"
-  aria-expanded="false"
->
-  ☰
-</button>
-<div id="primary-navigation" class="nav-links">            
-  <a href="index.html">About</a>
-  <a href="projects.html">Projects</a>
-  <a href="website-styles.html">Website Styles</a>
-  <a href="services.html">Services</a>  
-  <a href="lets-talk.html" class="active">Let's Talk</a>      
-  <button id="theme-toggle" class="theme-toggle" type="button">Light</button>
-      <span class="lang-switch active">EN</span>      
-      <a href="spanish-contact.html" class="lang-switch">ES</a>
-        </div>
-  </nav>
-  <div id="menu-overlay" class="menu-overlay"></div>
-
-  <section class="contact" id="contact">
-    <section class="contact-me">
-        <div class="contact-image">
-          <img src="MIDNIGHT.png" alt="Modern web development workspace" />
-          </div>
-        <div class="contact-form-wrap">
-        <p class="section-label">Contact</p>
-        <h2>Let’s talk about your project</h2>
-        <p class="contact-text">
-          Tell me a little about your business, what you need, and how I can help.
-        </p>
-
-        <form id="contact-form" class="contact-form" action="https://formspree.io/f/mrerznbo" method="POST">
-        <input type="text" name="name" placeholder="Your name" />
-            <input type="email" name="email" placeholder="Your email" />
-            <input type="text" name="service" placeholder="Your business or service" />
-            <textarea name="project" placeholder="Tell me about your project"></textarea>
-            <button type="submit" class="btn">Send Message</button>
-        </form>
-        <div class="contact-extra">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Custom websites and digital support for businesses and organizations. Thoughtful, bilingual design by Jaiden Montañez."><meta name="theme-color" content="#101114"><title>Let’s talk | JEM Web Solutions</title><link rel="stylesheet" href="style.css?v=20261112-sticky"></head><body><a class="skip-link" href="#main">Skip to content</a><nav class="navbar" aria-label="Main navigation"><a class="logo" href="index.html" aria-label="JEM Web Solutions — home"><img src="Logos/jem-logo-dark-navbar.png" class="logo-dark" alt="JEM Web Solutions LLC"><img src="Logos/jem-logo-light-navbar.png" class="logo-light" alt="JEM Web Solutions LLC"></a><button class="menu-toggle" id="menu-toggle-button" type="button" aria-label="Open navigation" aria-controls="primary-navigation" aria-expanded="false"><span></span><span></span></button><div id="primary-navigation" class="nav-links"><a href="index.html" class=" ">Home</a><a href="projects.html" class=" ">Projects</a><a href="website-styles.html" class=" ">Website Styles</a><a href="services.html" class=" ">Services</a><a href="lets-talk.html" class="active nav-contact" aria-current="page">Let’s Talk</a><div class="nav-tools"><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">Light</button><div class="languages"><span aria-current="true" lang="en">EN</span><a href="spanish-contact.html" lang="es">ES</a></div></div></div></nav><div id="menu-overlay" class="menu-overlay"></div><main id="main"><section class="contact"><div class="contact-me"><div class="contact-image"><p class="section-label">LET’S MAKE SOMETHING GOOD</p><img src="assets/workspace.jpg" alt="A web design workspace"><h2>It starts with<br>a conversation.</h2><p>A new idea, a website that needs a refresh, or a question. I’d love to hear what you have in mind.</p></div><div class="contact-form-wrap"><p class="section-label">GET IN TOUCH</p><h1>Let’s talk about<br>your next step.</h1><p class="contact-text">Tell me a little about your business and what you need. Your name, email, and project details are required.</p><form id="contact-form" class="contact-form" action="https://formspree.io/f/mrerznbo" method="POST"><label for="contact-name">Your name<input type="text" name="name" placeholder="Alex Rivera" id="contact-name" autocomplete="name" required></label><label for="contact-email">Your email<input type="email" name="email" placeholder="alex@example.com" id="contact-email" autocomplete="email" required></label><label for="contact-service">Your business or organization<input type="text" name="service" placeholder="Business name" id="contact-service" autocomplete="organization"></label><label for="contact-project">Tell me about your project<textarea name="project" placeholder="What do you have in mind?" id="contact-project" autocomplete="off" required></textarea></label><button type="submit" class="btn">Send Message</button></form><p class="form-status" id="form-status" role="status" aria-live="polite"></p><div class="contact-extra">
 
           <div class="contact-methods">
             <p class="contact-group-title">Call or message me</p>
 
             <div class="contact-method-grid">
 
-              <div class="contact-method-card phone-contact-card" id="phoneContactCard">                
+              <button class="contact-method-card phone-contact-card" id="phoneContactCard" type="button" aria-expanded="false" aria-controls="phoneChoicePopup">
                 <div class="contact-option-icon">
-                  <i class="fa-solid fa-phone"></i>
+                  <span aria-hidden="true">↗</span>
                 </div>
 
                 <div>
@@ -76,16 +17,16 @@
                 </div>
 
                 <span class="contact-arrow">→</span>
-              </div>
+              </button>
 
-              <div class="phone-choice-popup" id="phoneChoicePopup">
+              <div class="phone-choice-popup" id="phoneChoicePopup" hidden>
                 <a href="tel:+19598881096">Call Me</a>
                 <a href="sms:+19598881096">Text Me</a>
               </div>
 
-              <a href="https://wa.me/19598881096" class="contact-method-card">                
+              <a href="https://wa.me/19598881096" class="contact-method-card">
                 <div class="contact-option-icon">
-                  <i class="fa-brands fa-whatsapp"></i>
+                  <span aria-hidden="true">◉</span>
                 </div>
 
                 <div>
@@ -104,9 +45,9 @@
 
             <div class="social-links">
 
-              <a href="https://www.instagram.com/jemwebsolutionsllc/" class="social-link" target="_blank" rel="noopener noreferrer">                
+              <a href="https://www.instagram.com/jemwebsolutionsllc/" class="social-link" target="_blank" rel="noopener noreferrer">
                 <div class="contact-option-icon">
-                  <i class="fa-brands fa-instagram"></i>
+                  <span aria-hidden="true">◎</span>
                 </div>
 
                 <div>
@@ -117,9 +58,9 @@
                 <span class="contact-arrow">→</span>
               </a>
 
-              <a href="https://www.facebook.com/profile.php?id=61592599111129" class="social-link" target="_blank" rel="noopener noreferrer">                
+              <a href="https://www.facebook.com/profile.php?id=61592599111129" class="social-link" target="_blank" rel="noopener noreferrer">
                 <div class="contact-option-icon">
-                  <i class="fa-brands fa-facebook-f"></i>
+                  <span aria-hidden="true">f</span>
                 </div>
 
                 <div>
@@ -133,38 +74,4 @@
             </div>
           </div>
 
-        </div>
-    <p id="form-success" style="display:none; margin-top:14px;">Thanks! Your message was sent successfully.</p>
-      </div>
-    </section>
-  </section>
-  <script>
-    const form = document.getElementById("contact-form");
-    const successMessage = document.getElementById("form-success");
-
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
-
-      const formData = new FormData(form);
-
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: formData,
-        headers: {
-          Accept: "application/json"
-        }
-      });
-
-      if (response.ok) {
-        form.reset();
-        successMessage.style.display = "block";
-      } else {
-        alert("Something went wrong. Please try again.");
-      }
-    });
-  </script>
-  <script src="script.js"></script>
-
-</body>
-</html>
-
+        </div></div></div></section></main><footer class="footer"><a class="footer-wordmark" href="index.html">JEM<span>WEB SOLUTIONS</span></a><p>A digital presence as individual as your business.</p><div class="footer-bottom"><span>© 2026 JEM Web Solutions LLC</span><a href="lets-talk.html">Let’s make something good ↗</a><span>EN / ES</span></div></footer><script src="script.js?v=20261112" defer></script></body></html>
