@@ -2091,3 +2091,32 @@ h1 em {
     max-width:none;
   }
 }
+
+/* Signature collection: full luxury experiences, introduced as their own worlds. */
+.luxury-collection { margin:50px 0 85px; }
+.luxury-collection-heading { display:flex;align-items:center;justify-content:space-between;gap:25px;border-top:1px solid var(--border-soft);padding-top:22px;margin-bottom:28px; }
+.luxury-collection-heading h2 { font-size:24px;letter-spacing:-.03em; }
+.luxury-collection-heading>span { font-size:8px;letter-spacing:.15em;color:var(--text-soft); }
+.luxury-grid { display:grid;grid-template-columns:1fr 1fr;gap:40px 28px; }
+.luxury-card { min-width:0; }
+.luxury-card-visual { position:relative;display:block;height:370px;overflow:hidden;background:#1a1a18;isolation:isolate; }
+.luxury-card-visual>img { width:100%;height:100%;object-fit:cover;transition:transform .8s; }
+.luxury-card-visual:hover>img { transform:scale(1.045); }
+.luxury-card-overlay { position:absolute;inset:0;background:linear-gradient(0deg,#050707b0,transparent 65%),linear-gradient(180deg,#05070744,transparent 30%); }
+.luxury-card-index { position:absolute;top:20px;left:22px;font-size:8px;letter-spacing:.15em;color:#f1efe7; }
+.luxury-card-brand { position:absolute;bottom:25px;left:25px;color:#f4f1e8;font:400 32px Georgia,serif;letter-spacing:.02em; }
+.luxury-automotive .luxury-card-brand { font:500 26px 'Manrope',Arial,sans-serif;letter-spacing:.16em; }
+.luxury-fashion .luxury-card-brand { font-size:34px;letter-spacing:-.03em; }
+.luxury-open { position:absolute;right:22px;bottom:23px;border:1px solid #fff6;border-radius:50%;height:37px;width:37px;display:flex;align-items:center;justify-content:center;color:white;font-size:20px; }
+.luxury-card-copy { padding-top:22px; }
+.luxury-features { color:var(--accent);font-size:7px;letter-spacing:.1em;margin-bottom:12px; }
+.luxury-card-copy h3 { font-size:25px;margin-bottom:14px;letter-spacing:-.035em; }
+.luxury-card-copy>p:not(.luxury-features) { font-size:12px;line-height:1.8;color:var(--text-soft);max-width:440px; }
+.luxury-card-copy .text-link { margin-top:16px;color:var(--text-main);font-size:11px; }
+.business-styles-heading { border-top:1px solid var(--border-soft);padding-top:35px;margin-bottom:30px; }
+.business-styles-heading .section-label { font-size:8px;margin-bottom:12px; }
+.business-styles-heading h2 { font-size:32px; }
+.business-styles-heading>p:last-child { margin-top:15px;font-size:12px;color:var(--text-soft); }
+@media(max-width:900px) { .luxury-card-visual { height:300px; }.luxury-card-brand { font-size:27px; }.luxury-automotive .luxury-card-brand { font-size:21px; }.luxury-fashion .luxury-card-brand { font-size:29px; }.luxury-card-copy h3 { font-size:22px; } }
+@media(max-width:650px) { .luxury-collection { margin:35px 0 60px; }.luxury-collection-heading { display:block; }.luxury-collection-heading>span { display:block;margin-top:12px; }.luxury-collection-heading h2 { font-size:25px; }.luxury-grid { grid-template-columns:1fr;gap:35px; }.luxury-card-visual { height:320px; }.luxury-card-brand { font-size:29px; }.luxury-automotive .luxury-card-brand { font-size:23px; }.luxury-card-copy h3 { font-size:25px; }.business-styles-heading h2 { font-size:29px; } }
+.luxury-card-brand { max-width:calc(100% - 95px);line-height:1.1; }
