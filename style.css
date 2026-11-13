@@ -2120,3 +2120,30 @@ h1 em {
 @media(max-width:900px) { .luxury-card-visual { height:300px; }.luxury-card-brand { font-size:27px; }.luxury-automotive .luxury-card-brand { font-size:21px; }.luxury-fashion .luxury-card-brand { font-size:29px; }.luxury-card-copy h3 { font-size:22px; } }
 @media(max-width:650px) { .luxury-collection { margin:35px 0 60px; }.luxury-collection-heading { display:block; }.luxury-collection-heading>span { display:block;margin-top:12px; }.luxury-collection-heading h2 { font-size:25px; }.luxury-grid { grid-template-columns:1fr;gap:35px; }.luxury-card-visual { height:320px; }.luxury-card-brand { font-size:29px; }.luxury-automotive .luxury-card-brand { font-size:23px; }.luxury-card-copy h3 { font-size:25px; }.business-styles-heading h2 { font-size:29px; } }
 .luxury-card-brand { max-width:calc(100% - 95px);line-height:1.1; }
+
+/* Live previews introduce complete, code-driven concept websites. */
+.experience-collection{margin:55px 0 90px;scroll-margin-top:110px}
+.experience-collection-heading{display:flex;justify-content:space-between;align-items:center;gap:25px;border-top:1px solid var(--border-soft);padding-top:25px;margin-bottom:40px}
+.experience-collection-heading h2{font-size:25px;letter-spacing:-.04em}
+.experience-collection-heading>span{font-size:8px;letter-spacing:.12em;color:var(--text-soft)}
+.experience-card{display:grid;grid-template-columns:1.65fr 1fr;gap:45px;align-items:center;margin-bottom:55px;padding-bottom:55px;border-bottom:1px solid var(--border-soft)}
+.experience-window{min-width:0;display:block;border:1px solid var(--border-soft);border-radius:6px;overflow:hidden;background:#090b0c}
+.experience-window-bar{display:flex;justify-content:space-between;padding:12px 15px;background:#191b1e;color:#a5a9ae;font-size:8px;letter-spacing:.04em}
+.experience-window-bar>span:first-child{letter-spacing:3px}
+.experience-frame{height:400px;position:relative;overflow:hidden}
+.experience-frame iframe{width:200%;height:200%;border:0;transform:scale(.5);transform-origin:0 0;pointer-events:none}
+.experience-preview-enter{position:absolute;left:50%;top:50%;transform:translate(-50%,-40%);background:#f0f1e4;color:#101114;border-radius:99px;padding:18px 25px;font-size:9px;letter-spacing:.08em;white-space:nowrap;opacity:0;transition:opacity .2s,transform .2s;box-shadow:0 10px 50px #0003}
+.experience-window:hover .experience-preview-enter,.experience-window:focus-visible .experience-preview-enter{opacity:1;transform:translate(-50%,-50%)}
+.experience-card-copy{min-width:0}
+.experience-card-copy .section-label{font-size:8px;margin-bottom:25px}
+.experience-brand{font-size:38px;letter-spacing:-.065em;font-weight:500}
+.experience-card-copy h3{font-size:24px;letter-spacing:-.04em;line-height:1.1;margin:12px 0 20px}
+.experience-card-copy>p:not(.section-label){font-size:12px;line-height:1.9;color:var(--text-soft)}
+.experience-card-copy .experience-tech{font-size:7px!important;letter-spacing:.08em;line-height:1.8!important;margin:24px 0;color:var(--accent)!important}
+.experience-enter{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-soft);font-size:12px;padding:14px 0;color:var(--text-main)}
+.experience-enter span{font-size:22px;transition:transform .2s}.experience-enter:hover span{transform:translate(3px,-3px)}
+.experience-note{font-size:11px;line-height:1.8;color:var(--text-soft);max-width:600px;margin-top:-25px}
+@media(min-width:1100px){.preview-form{grid-template-columns:1fr 1.65fr}.preview-form .experience-window{order:2}.preview-form .experience-card-copy{order:1}}
+@media(max-width:1000px){.experience-card{gap:25px;grid-template-columns:1.3fr 1fr}.experience-frame{height:340px}.experience-brand{font-size:30px}.experience-card-copy h3{font-size:23px}}
+@media(max-width:700px){.experience-collection{margin-top:35px}.experience-collection-heading{display:block}.experience-collection-heading>span{display:block;margin-top:15px}.experience-collection-heading h2{font-size:26px}.experience-card{grid-template-columns:1fr;gap:25px;margin-bottom:40px;padding-bottom:40px}.experience-frame{height:330px}.experience-card-copy .section-label{margin-bottom:18px}.experience-brand{font-size:37px}.experience-card-copy h3{font-size:27px}.experience-card-copy>p:not(.section-label){font-size:13px}.experience-preview-enter{opacity:1;top:auto;bottom:20px;left:auto;right:15px;transform:none;padding:12px 16px;font-size:8px}.experience-window:hover .experience-preview-enter{transform:none}.experience-note{margin-top:0}}
+@media(prefers-reduced-motion:reduce){.experience-preview-enter,.experience-enter span{transition:none}}
