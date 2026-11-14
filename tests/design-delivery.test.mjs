@@ -7,7 +7,7 @@ const source=readFileSync(new URL('../design-studio.js',import.meta.url),'utf8')
 const png='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6WQAAAABJRU5ErkJggg==';
 
 async function harness(lang='en', options={}) {
-  const elements=new Map(),storage=options.storage || new Map(),calls=[],saved=new Map(),images=new Map();
+  const elements=new Map(),storage=options.storage || new Map(),calls=[],saved=new Map(),images=new Map(),downloads=[];
   const state={saveOK:true,mailOK:true,imageOK:true};
   const el=id=>{
     if(!elements.has(id)) elements.set(id,{value:'',textContent:'',innerHTML:'',files:[],dataset:{},listeners:{},disabled:false,
@@ -22,7 +22,7 @@ async function harness(lang='en', options={}) {
   const context={document:{documentElement:{lang},getElementById:el,createElement:tag=>tag==='canvas'?{width:0,height:0,getContext:()=>({clearRect(){},drawImage(){}}),toDataURL:()=>png}:el('new-button')},
     indexedDB:options.indexedDB,localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)},
     location:{href:'https://jemwebsolutions.com/design-studio',hash:options.hash || '',pathname:'/design-studio',reload(){}},history:{replaceState(){}},
-    Image:class{naturalWidth=2400;naturalHeight=1600;async decode(){}},structuredClone,Blob,URL:class extends URL{static createObjectURL(){return 'blob:photo'}static revokeObjectURL(){}},TextEncoder,TextDecoder,Uint8Array,btoa,atob,FormData,AbortSignal,setTimeout,clearTimeout,confirm:()=>true,console,
+    Image:class{naturalWidth=2400;naturalHeight=1600;async decode(){}},structuredClone,Blob,URL:class extends URL{static createObjectURL(blob){downloads.push(blob);return 'blob:photo'}static revokeObjectURL(){}},TextEncoder,TextDecoder,Uint8Array,btoa,atob,FormData,AbortSignal,setTimeout,clearTimeout,confirm:()=>true,console,
     fetch:async(url,config={})=>{
       calls.push({url,config});
       if(url==='/.netlify/functions/save-design-image') {
@@ -38,7 +38,7 @@ async function harness(lang='en', options={}) {
     }};
   el('studio-send').action='https://formspree.io/f/mrerznbo';
   await vm.runInNewContext(source,context);
-  return {el,storage,calls,saved,images,state,context,submit:()=>el('studio-send').listeners.submit({preventDefault(){},currentTarget:el('studio-send')})};
+  return {el,storage,calls,saved,images,downloads,state,context,submit:()=>el('studio-send').listeners.submit({preventDefault(){},currentTarget:el('studio-send')})};
 }
 async function addImages(h) {
   const design=JSON.parse(h.storage.get('jem-design-studio-v1'));
@@ -194,4 +194,24 @@ test('photo collections migrate to IndexedDB and reopen without the localStorage
  const reopened=await harness('en',{storage:legacy,indexedDB});
  assert(reopened.el('gallery-manager').innerHTML.includes('My photo 149.png'));
  assert.equal(reopened.el('gallery-count').textContent,'150 website photos');
+});
+
+
+for(const lang of ['en','es']) test(`${lang}: downloads a visual HTML preview and reopens it as an editable design`,async()=>{
+ const h=await harness(lang),design=await addImages(h);
+ design.heading='My design </script><script>alert(1)</script>';
+ design.gallery=[{src:png,name:'A website photo.png'},{src:'/.netlify/functions/load-design-image?id='+'a'.repeat(64),name:'Saved photo.png'}];
+ h.el('import-file').files=[{text:async()=>JSON.stringify(design)}];await h.el('import-file').listeners.change();
+ h.el('download').listeners.click();
+ const blob=h.downloads.at(-1),html=await blob.text();
+ assert.match(blob.type,/text\/html/);
+ assert.equal(h.el('new-button').download,'jem-website-preview.html');
+ assert(html.startsWith('<!DOCTYPE html>'));
+ assert(html.includes('<h1>My design &lt;/script&gt;'));
+ assert(!html.includes('<script>alert(1)</script>'));
+ assert(html.includes('src="https://jemwebsolutions.com/'));
+ assert.equal((html.match(/<script/g)||[]).length,1);
+ assert(html.includes('id="jem-design-data"'));
+ h.el('import-file').files=[{text:async()=>html}];await h.el('import-file').listeners.change();
+ assert.deepEqual(JSON.parse(h.storage.get('jem-design-studio-v1')),design);
 });
