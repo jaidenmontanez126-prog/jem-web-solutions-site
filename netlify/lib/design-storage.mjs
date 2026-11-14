@@ -4,6 +4,7 @@ const layouts = ['cinematic', 'editorial', 'bold', 'minimal'];
 const sections = ['services', 'gallery', 'testimonials', 'contact'];
 const samples = ['assets/luxury/residence.jpg', 'assets/luxury/fashion.jpg', 'assets/luxury/automotive.jpg', 'assets/workspace.jpg'];
 const maxBytes = 2300000;
+const storedImagePattern = /^\/\.netlify\/functions\/load-design-image\?id=[a-f0-9]{64}$/;
 const headers = {
   'Content-Type': 'application/json; charset=utf-8',
   'Cache-Control': 'private, no-store',
@@ -15,7 +16,7 @@ const reply = (status, body) => new Response(JSON.stringify(body), {status, head
 
 function validImage(value, optional, limit = 360000) {
   if (value === '') return optional;
-  if (samples.includes(value)) return true;
+  if (samples.includes(value) || (typeof value === 'string' && storedImagePattern.test(value))) return true;
   if (typeof value !== 'string' || value.length >= limit) return false;
   const match = /^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/]+={0,2})$/.exec(value);
   if (!match || match[2].length % 4) return false;
@@ -47,7 +48,7 @@ export function validateDesign(raw) {
     if (!validImage(raw[field], field === 'logo')) throw Error('Invalid image');
     design[field] = raw[field];
   }
-  if (raw.gallery !== undefined && (!Array.isArray(raw.gallery) || raw.gallery.length > 8)) throw Error('Invalid gallery');
+  if (raw.gallery !== undefined && !Array.isArray(raw.gallery)) throw Error('Invalid gallery');
   design.gallery = (raw.gallery || []).map(photo => {
     if (!photo || typeof photo.name !== 'string' || photo.name.length > 160 || !validImage(photo.src, false, 160000) || samples.includes(photo.src)) throw Error('Invalid gallery photo');
     return {src:photo.src, name:photo.name};
@@ -110,5 +111,39 @@ export function createLoadHandler(getStore) {
       console.error('Design storage read failed');
       return reply(503, {error:'Design could not be opened right now'});
     }
+  };
+}
+
+
+export function createSaveImageHandler(getStore, makeId = () => randomBytes(32).toString('hex')) {
+  return async request => {
+    if (request.method !== 'POST') return reply(405,{error:'Method not allowed'});
+    if (request.headers.get('origin') !== new URL(request.url).origin) return reply(403,{error:'Invalid origin'});
+    if (!request.headers.get('content-type')?.startsWith('application/json')) return reply(415,{error:'Expected JSON'});
+    let src;
+    try {
+      const body=await readLimited(request);src=body.src;
+      if (typeof src !== 'string' || !src.startsWith('data:') || !validImage(src,false)) throw Error('Invalid photo');
+    } catch {return reply(400,{error:'Invalid photo'});}
+    try {
+      const id=makeId();
+      await getStore().setJSON(`images/${id}`,{src});
+      return reply(201,{id});
+    } catch {console.error('Design image storage write failed');return reply(503,{error:'Photo storage unavailable'});}
+  };
+}
+
+export function createLoadImageHandler(getStore) {
+  return async request => {
+    if(request.method!=='GET')return reply(405,{error:'Method not allowed'});
+    const id=new URL(request.url).searchParams.get('id');
+    if(!/^[a-f0-9]{64}$/.test(id || ''))return reply(404,{error:'Photo not found'});
+    try {
+      const image=await getStore().get(`images/${id}`,{type:'json',consistency:'strong'});
+      if(!image)return reply(404,{error:'Photo not found'});
+      if(typeof image.src!=='string' || !image.src.startsWith('data:') || !validImage(image.src,false))throw Error('Invalid stored image');
+      const [,type,base64]=/^data:(image\/(?:png|jpeg|webp));base64,(.+)$/.exec(image.src);
+      return new Response(Buffer.from(base64,'base64'),{headers:{...headers,'Content-Type':type,'Content-Security-Policy':"default-src 'none'; sandbox"}});
+    }catch{console.error('Design image storage read failed');return reply(503,{error:'Photo unavailable'});}
   };
 }

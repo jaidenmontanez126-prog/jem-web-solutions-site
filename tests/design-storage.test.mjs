@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createSaveHandler, createLoadHandler, validateDesign } from '../netlify/lib/design-storage.mjs';
+import { createSaveHandler, createLoadHandler, createSaveImageHandler, createLoadImageHandler, validateDesign } from '../netlify/lib/design-storage.mjs';
 
 const png = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6WQAAAABJRU5ErkJggg==';
 const fixture = () => ({version:1,layout:'minimal',brand:'Montañez Diseño',heading:'A complete idea',description:'With the actual images.',cta:'Explore',font:'serif',accent:'#e32400',background:'#ffaa00',image:png,logo:png,gallery:[],sections:['gallery','contact'],order:['services','gallery','testimonials','contact'],serviceText:'Personal service',testimonial:'Sample text'});
@@ -82,7 +82,7 @@ test('eight gallery photos preserve names, order and image contents in stored re
   const {id}=await response.json();
   const restored=await load(new Request('https://jemwebsolutions.com/api?id='+id));
   assert.deepEqual((await restored.json()).design.gallery,design.gallery);
-  for(const gallery of [Array(9).fill({src:png,name:'Extra.png'}),[{src:'https://evil.example/photo.jpg',name:'Bad'}],[{src:png,name:'x'.repeat(161)}],[{src:'assets/workspace.jpg',name:'Not an upload'}]]) {
+  for(const gallery of [[{src:'https://evil.example/photo.jpg',name:'Bad'}],[{src:png,name:'x'.repeat(161)}],[{src:'assets/workspace.jpg',name:'Not an upload'}]]) {
     assert.throws(()=>validateDesign({...fixture(),gallery}));
   }
 });
@@ -90,4 +90,25 @@ test('eight gallery photos preserve names, order and image contents in stored re
 test('legacy designs without a gallery remain readable', () => {
   const old=fixture();delete old.gallery;
   assert.deepEqual(validateDesign(old).gallery,[]);
+});
+
+
+test('photo storage serves the original optimized image with safe image headers',async()=>{
+ const store=memoryStore(),save=createSaveImageHandler(()=>store),load=createLoadImageHandler(()=>store);
+ const response=await save(request({src:png}));assert.equal(response.status,201);
+ const {id}=await response.json();const restored=await load(new Request('https://jemwebsolutions.com/api?id='+id));
+ assert.equal(restored.status,200);assert.equal(restored.headers.get('content-type'),'image/png');
+ assert.deepEqual(Buffer.from(await restored.arrayBuffer()),Buffer.from(png.split(',')[1],'base64'));
+ assert.equal(restored.headers.get('x-content-type-options'),'nosniff');
+ const path='/.netlify/functions/load-design-image?id='+id;
+ const manifest=validateDesign({...fixture(),image:path,logo:path,gallery:Array.from({length:150},(_,i)=>({src:path,name:`Photo ${i}.png`}))});
+ assert.equal(manifest.gallery.length,150);
+});
+
+test('photo storage rejects remote URLs, executable payloads and unknown tokens',async()=>{
+ const store=memoryStore(),save=createSaveImageHandler(()=>store),load=createLoadImageHandler(()=>store);
+ for(const src of ['https://evil.example/photo.jpg','data:image/svg+xml;base64,PHN2Zy8+','data:image/png;base64,YQ==']) assert.equal((await save(request({src}))).status,400);
+ assert.equal((await load(new Request('https://jemwebsolutions.com/api?id=../private'))).status,404);
+ assert.equal((await load(new Request('https://jemwebsolutions.com/api?id='+'f'.repeat(64)))).status,404);
+ assert.throws(()=>validateDesign({...fixture(),gallery:[{src:'/.netlify/functions/load-design-image?id=../private',name:'Bad'}]}));
 });

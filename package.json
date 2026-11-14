@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "test": "node --test tests/*.test.mjs",
-    "check": "node --check design-studio.js && node --check netlify/functions/save-design.mjs && node --check netlify/functions/load-design.mjs && npm test"
+    "check": "node --check design-studio.js && node --check netlify/functions/save-design.mjs && node --check netlify/functions/load-design.mjs && node --check netlify/functions/save-design-image.mjs && node --check netlify/functions/load-design-image.mjs && npm test"
   },
   "dependencies": {
     "@netlify/blobs": "7.3.0"
