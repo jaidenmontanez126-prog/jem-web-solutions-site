@@ -1,4 +1,4 @@
-(() => {
+(async () => {
 'use strict';
 const es = document.documentElement.lang === 'es';
 const t = (en, sp) => es ? sp : en;
@@ -15,7 +15,7 @@ const sectionNames = {services:t('Services','Servicios'),gallery:t('Gallery','Ga
 const defaults = {version:1,layout:'cinematic',brand:t('Your extraordinary brand','Tu marca extraordinaria'),heading:t('Anything but ordinary.','Algo extraordinario.'),description:t('A different perspective. An experience worth remembering. This is your next chapter.','Una perspectiva diferente. Una experiencia inolvidable. Este es tu próximo capítulo.'),cta:t('Explore the possibilities','Explora las posibilidades'),font:'serif',accent:'#e5b978',background:'#151817',image:'assets/luxury/residence.jpg',logo:'',sections:['services','gallery','contact'],order:Object.keys(sectionNames),serviceText:t('Thoughtful design\nPersonal service\nExceptional details','Diseño con intención\nServicio personalizado\nDetalles excepcionales'),testimonial:t('“An experience we will always remember.” — Sample client','“Una experiencia que siempre recordaremos.” — Cliente de ejemplo')};
 let design = structuredClone(defaults), saveFailed = false, reviewMode = false;
 function validate(raw) {
- if (!raw || raw.version !== 1 || !presets[raw.layout]) throw Error('Invalid design');
+ if (!raw || raw.version !== 1 || !Object.prototype.hasOwnProperty.call(presets,raw.layout)) throw Error('Invalid design');
  const next = structuredClone(defaults);
  for (const field of ['brand','heading','description','cta','serviceText','testimonial']) if(typeof raw[field]==='string') next[field]=raw[field].slice(0,2000);
  for (const field of ['accent','background']) if(/^#[0-9a-f]{6}$/i.test(raw[field])) next[field]=raw[field];
@@ -28,10 +28,7 @@ function validate(raw) {
  return next;
 }
 try { const saved=localStorage.getItem(key); if(saved) design=validate(JSON.parse(saved)); } catch {}
-// A URL fragment stays in the browser and is not sent to analytics or the server.
-function encodeDesign(value) {
- return btoa(Array.from(new TextEncoder().encode(JSON.stringify(value)), byte => String.fromCharCode(byte)).join('')).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-}
+// Keep reading older design links as well as complete stored submissions.
 function decodeDesign(value) {
  if(value.length>40000) throw Error('Design link too long');
  const binary=atob(value.replace(/-/g,'+').replace(/_/g,'/'));
@@ -41,16 +38,39 @@ let linkError=false;
 if(location.hash.startsWith('#design=')) {
  try { design=decodeDesign(location.hash.slice(8)); reviewMode=true; } catch { linkError=true; }
 }
-function handoff() {
- const shared=structuredClone(design), uploads=[];
- if(shared.image.startsWith('data:')) { uploads.push(t('hero photo','foto principal')); shared.image=presets[shared.layout].image; }
- if(shared.logo.startsWith('data:')) { uploads.push(t('logo','logo')); shared.logo=''; }
- const url=new URL(es?'spanish-studio.html':'design-studio.html',location.href);
- url.hash='design='+encodeDesign(shared);
- return {url:url.href,uploads};
-}
 const main=$('main');
-main.innerHTML=`<div class="studio-heading"><div><p class="section-label">JEM / ${t('THE DESIGN STUDIO','ESTUDIO DE DISEÑO')}</p><h1>${t('Make it yours.','Hazlo tuyo.')}</h1><p>${t('Turn “I have an idea” into something you can see. Choose a direction, change the details, and send me your vision.','Convierte tu idea en algo que puedes ver. Elige un estilo, cambia los detalles y envíame tu visión.')}</p></div><span class="studio-tag">✦ ${t('Your idea starts here','Tu idea empieza aquí')}</span></div><div class="studio-layout"><aside class="studio-controls" aria-label="${t('Design controls','Controles de diseño')}"><details open><summary>01 / ${t('Choose your direction','Elige tu estilo')}</summary><label>${t('Layout','Diseño')}<select id="layout">${Object.entries(presets).map(([k,p])=>`<option value="${k}">${p.name}</option>`).join('')}</select></label><label>${t('Accent color','Color de acento')}<input id="accent" type="color"></label><label>${t('Background','Fondo')}<input id="background" type="color"></label><label>${t('Typography','Tipografía')}<select id="font"><option value="serif">${t('Classic serif','Serif clásica')}</option><option value="sans-serif">${t('Modern sans','Sans moderna')}</option><option value="monospace">${t('Creative mono','Mono creativa')}</option></select></label></details><details open><summary>02 / ${t('Tell your story','Cuenta tu historia')}</summary>${[['brand',t('Business name','Nombre del negocio')],['heading',t('Main headline','Título principal')],['description',t('Introduction','Introducción')],['cta',t('Button text','Texto del botón')]].map(([id,label])=>`<label>${label}${id==='description'?`<textarea id="${id}" maxlength="2000"></textarea>`:`<input id="${id}" maxlength="160">`}</label>`).join('')}<label>${t('Hero photo','Foto principal')}<input id="photo-upload" type="file" accept="image/*,.heic,.heif,.hif" aria-describedby="photo-upload-status"></label><p class="upload-status" id="photo-upload-status" role="status" aria-live="polite"></p><label>${t('Your logo','Tu logo')}<input id="logo-upload" type="file" accept="image/*,.heic,.heif,.hif" aria-describedby="logo-upload-status"></label><p class="upload-status" id="logo-upload-status" role="status" aria-live="polite"></p><p class="studio-caption">${t('Photos, screenshots, and logos up to 20 MB. Supports JPG, PNG, WebP, GIF, SVG, AVIF, BMP, and iPhone HEIC/HEIF photos. Images are converted and resized automatically; animated images use a still frame.','Fotos, capturas y logos de hasta 20 MB. Admite JPG, PNG, WebP, GIF, SVG, AVIF, BMP y fotos HEIC/HEIF de iPhone. Conversión y tamaño automáticos; las imágenes animadas usan un fotograma.')}</p><button id="clear-images" type="button">${t('Restore sample images','Restaurar imágenes de muestra')}</button></details><details><summary>03 / ${t('Build your page','Construye tu página')}</summary><p class="studio-caption">${t('Select sections. Use arrows to change their order.','Selecciona secciones. Usa las flechas para cambiar su orden.')}</p><div id="section-options"></div><label>${t('Services (one per line)','Servicios (uno por línea)')}<textarea id="serviceText" maxlength="2000"></textarea></label><label>${t('Testimonial / sample text','Testimonio / texto de muestra')}<textarea id="testimonial" maxlength="2000"></textarea></label></details><div class="studio-save"><button id="download" type="button">${t('↓ Save file','↓ Guardar archivo')}</button><button id="import" type="button">${t('Open file','Abrir archivo')}</button><input id="import-file" type="file" accept=".json,application/json" hidden><button id="reset" type="button">${t('Start over','Empezar de nuevo')}</button><p class="save-status" id="save-status" role="status"></p></div></aside><div class="studio-preview"><div class="studio-toolbar"><span>${t('LIVE PREVIEW','VISTA EN VIVO')}</span><div><button id="desktop" type="button" aria-pressed="true">${t('Desktop','Escritorio')}</button> <button id="phone" type="button" aria-pressed="false">${t('Phone','Teléfono')}</button></div></div><div class="studio-canvas" id="canvas"><iframe id="preview" title="${t('Your website concept','Tu concepto de sitio web')}" sandbox=""></iframe></div><p class="studio-caption">${t('Concept preview only. Buttons and sample content illustrate your idea; this is not a published website or a booking system.','Vista conceptual. Los botones y el contenido de muestra ilustran tu idea; no es un sitio publicado ni un sistema de reservas.')}</p><form id="studio-send" class="studio-send" action="https://formspree.io/f/mrerznbo" method="POST"><p class="section-label">${t('LOVE THE DIRECTION?','¿TE GUSTA LA IDEA?')}</p><h2>${t('Let’s bring it to life.','Démosle vida.')}</h2><p>${t('JEM receives a readable brief and a link to your visual design. Uploaded photos and logos must be shared separately using your saved design file. We’ll discuss scope and a quote before work begins.','JEM recibe un resumen y un enlace a tu diseño visual. Las fotos y logos subidos deben compartirse aparte usando tu archivo de diseño guardado. Hablaremos del alcance y presupuesto antes de comenzar.')}</p><div class="send-grid"><label>${t('Your name','Tu nombre')}<input name="name" autocomplete="name" required maxlength="160"></label><label>${t('Your email','Tu correo')}<input name="email" type="email" autocomplete="email" required maxlength="254"></label></div><label>${t('Anything else? Timeline, budget, or ideas.','¿Algo más? Plazo, presupuesto o ideas.')}<textarea name="project" maxlength="5000"></textarea></label><button type="submit" class="btn">${t('Send my design to JEM ↗','Enviar mi diseño a JEM ↗')}</button><p class="studio-status" id="send-status" role="status" aria-live="polite"></p></form></div></div>`;
+if(location.hash.startsWith('#submission=')) {
+ const id=location.hash.slice(12);
+ main.innerHTML='<p class="studio-status" role="status">'+t('Opening your complete design…','Abriendo tu diseño completo…')+'</p>';
+ try {
+  if(!/^[a-f0-9]{64}$/.test(id))throw Error('Invalid link');
+  const response=await fetch('/.netlify/functions/load-design?id='+id,{cache:'no-store',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(15000)});
+  if(!response.ok)throw Error('Design unavailable');
+  const result=await response.json();
+  design=validate(result.design);reviewMode=true;
+ } catch {
+  main.innerHTML=`<h1>${t('Design unavailable.','Diseño no disponible.')}</h1><p class="studio-status" role="alert">${t('We could not open this design. Check the link or try again in a moment.','No pudimos abrir este diseño. Revisa el enlace o intenta de nuevo en un momento.')}</p><button type="button" id="retry-design" class="btn">${t('Try again','Intentar de nuevo')}</button>`;
+  $('retry-design').addEventListener('click',()=>location.reload());
+  return;
+ }
+}
+let cachedHandoff, pendingUploads=0;
+async function handoff(snapshot, honeypot) {
+ const signature=JSON.stringify(snapshot);
+ if(cachedHandoff?.signature===signature)return cachedHandoff;
+ const response=await fetch('/.netlify/functions/save-design',{
+  method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({design:snapshot,website:honeypot}),signal:AbortSignal.timeout(20000)
+ });
+ if(!response.ok)throw Error(response.status===429?'RATE_LIMIT':'STORAGE_UNAVAILABLE');
+ const result=await response.json();
+ if(!/^[a-f0-9]{64}$/.test(result.id || ''))throw Error('STORAGE_UNAVAILABLE');
+ const url=new URL(es?'spanish-studio.html':'design-studio.html',location.href);
+ url.hash='submission='+result.id;
+ cachedHandoff={signature,url:url.href};
+ return cachedHandoff;
+}
+main.innerHTML=`<div class="studio-heading"><div><p class="section-label">JEM / ${t('THE DESIGN STUDIO','ESTUDIO DE DISEÑO')}</p><h1>${t('Make it yours.','Hazlo tuyo.')}</h1><p>${t('Turn “I have an idea” into something you can see. Choose a direction, change the details, and send me your vision.','Convierte tu idea en algo que puedes ver. Elige un estilo, cambia los detalles y envíame tu visión.')}</p></div><span class="studio-tag">✦ ${t('Your idea starts here','Tu idea empieza aquí')}</span></div><div class="studio-layout"><aside class="studio-controls" aria-label="${t('Design controls','Controles de diseño')}"><details open><summary>01 / ${t('Choose your direction','Elige tu estilo')}</summary><label>${t('Layout','Diseño')}<select id="layout">${Object.entries(presets).map(([k,p])=>`<option value="${k}">${p.name}</option>`).join('')}</select></label><label>${t('Accent color','Color de acento')}<input id="accent" type="color"></label><label>${t('Background','Fondo')}<input id="background" type="color"></label><label>${t('Typography','Tipografía')}<select id="font"><option value="serif">${t('Classic serif','Serif clásica')}</option><option value="sans-serif">${t('Modern sans','Sans moderna')}</option><option value="monospace">${t('Creative mono','Mono creativa')}</option></select></label></details><details open><summary>02 / ${t('Tell your story','Cuenta tu historia')}</summary>${[['brand',t('Business name','Nombre del negocio')],['heading',t('Main headline','Título principal')],['description',t('Introduction','Introducción')],['cta',t('Button text','Texto del botón')]].map(([id,label])=>`<label>${label}${id==='description'?`<textarea id="${id}" maxlength="2000"></textarea>`:`<input id="${id}" maxlength="160">`}</label>`).join('')}<label>${t('Hero photo','Foto principal')}<input id="photo-upload" type="file" accept="image/*,.heic,.heif,.hif" aria-describedby="photo-upload-status"></label><p class="upload-status" id="photo-upload-status" role="status" aria-live="polite"></p><label>${t('Your logo','Tu logo')}<input id="logo-upload" type="file" accept="image/*,.heic,.heif,.hif" aria-describedby="logo-upload-status"></label><p class="upload-status" id="logo-upload-status" role="status" aria-live="polite"></p><p class="studio-caption">${t('Photos, screenshots, and logos up to 20 MB. Supports JPG, PNG, WebP, GIF, SVG, AVIF, BMP, and iPhone HEIC/HEIF photos. Images are converted and resized automatically; animated images use a still frame.','Fotos, capturas y logos de hasta 20 MB. Admite JPG, PNG, WebP, GIF, SVG, AVIF, BMP y fotos HEIC/HEIF de iPhone. Conversión y tamaño automáticos; las imágenes animadas usan un fotograma.')}</p><button id="clear-images" type="button">${t('Restore sample images','Restaurar imágenes de muestra')}</button></details><details><summary>03 / ${t('Build your page','Construye tu página')}</summary><p class="studio-caption">${t('Select sections. Use arrows to change their order.','Selecciona secciones. Usa las flechas para cambiar su orden.')}</p><div id="section-options"></div><label>${t('Services (one per line)','Servicios (uno por línea)')}<textarea id="serviceText" maxlength="2000"></textarea></label><label>${t('Testimonial / sample text','Testimonio / texto de muestra')}<textarea id="testimonial" maxlength="2000"></textarea></label></details><div class="studio-save"><button id="download" type="button">${t('↓ Save file','↓ Guardar archivo')}</button><button id="import" type="button">${t('Open file','Abrir archivo')}</button><input id="import-file" type="file" accept=".json,application/json" hidden><button id="reset" type="button">${t('Start over','Empezar de nuevo')}</button><p class="save-status" id="save-status" role="status"></p></div></aside><div class="studio-preview"><div class="studio-toolbar"><span>${t('LIVE PREVIEW','VISTA EN VIVO')}</span><div><button id="desktop" type="button" aria-pressed="true">${t('Desktop','Escritorio')}</button> <button id="phone" type="button" aria-pressed="false">${t('Phone','Teléfono')}</button></div></div><div class="studio-canvas" id="canvas"><iframe id="preview" title="${t('Your website concept','Tu concepto de sitio web')}" sandbox=""></iframe></div><p class="studio-caption">${t('Concept preview only. Buttons and sample content illustrate your idea; this is not a published website or a booking system.','Vista conceptual. Los botones y el contenido de muestra ilustran tu idea; no es un sitio publicado ni un sistema de reservas.')}</p><form id="studio-send" class="studio-send" action="https://formspree.io/f/mrerznbo" method="POST"><p class="section-label">${t('LOVE THE DIRECTION?','¿TE GUSTA LA IDEA?')}</p><h2>${t('Let’s bring it to life.','Démosle vida.')}</h2><p>${t('Send your complete design, including your preview photos and logo, in one step. JEM receives your project brief and a review link. Anyone with that link can view the design. We’ll discuss scope and a quote before work begins.','Envía tu diseño completo, incluidas tus fotos de vista previa y logo, en un solo paso. JEM recibe tu resumen y un enlace de revisión. Cualquier persona con ese enlace puede ver el diseño. Hablaremos del alcance y presupuesto antes de comenzar.')}</p><label class="studio-trap" aria-hidden="true">Leave this field empty<input name="_gotcha" tabindex="-1" autocomplete="off"></label><div class="send-grid"><label>${t('Your name','Tu nombre')}<input name="name" autocomplete="name" required maxlength="160"></label><label>${t('Your email','Tu correo')}<input name="email" type="email" autocomplete="email" required maxlength="254"></label></div><label>${t('Anything else? Timeline, budget, or ideas.','¿Algo más? Plazo, presupuesto o ideas.')}<textarea name="project" maxlength="5000"></textarea></label><button type="submit" class="btn">${t('Send my design to JEM ↗','Enviar mi diseño a JEM ↗')}</button><p class="studio-status" id="send-status" role="status" aria-live="polite"></p></form></div></div>`;
 function sectionsUI(){
  $('section-options').innerHTML=design.order.map((s,i)=>`<div class="section-choice"><label><input type="checkbox" data-section="${s}" ${design.sections.includes(s)?'checked':''}>${sectionNames[s]}</label><button type="button" data-move="${s}" data-delta="-1" aria-label="${t('Move up','Subir')} ${sectionNames[s]}" ${i===0?'disabled':''}>↑</button><button type="button" data-move="${s}" data-delta="1" aria-label="${t('Move down','Bajar')} ${sectionNames[s]}" ${i===3?'disabled':''}>↓</button></div>`).join('');
 }
@@ -129,7 +149,7 @@ for(const [id,field] of [['photo-upload','image'],['logo-upload','logo']]) $(id)
   status.textContent=t('Choose an image up to 20 MB. Documents such as PDFs cannot be used as a website photo.','Elige una imagen de hasta 20 MB. Los documentos como PDF no se pueden usar como foto del sitio.');
   status.dataset.state='error';input.value='';return;
  }
- input.disabled=true;
+ input.disabled=true;pendingUploads++;
  status.textContent=t('Preparing your image…','Preparando tu imagen…');
  try {
   const data=await prepareImage(file,field==='logo',status);
@@ -141,7 +161,7 @@ for(const [id,field] of [['photo-upload','image'],['logo-upload','logo']]) $(id)
    ?t('The iPhone photo converter could not load. Check your internet connection and choose the photo again. Your previous image is unchanged.','No se pudo cargar el convertidor de iPhone. Revisa tu conexión y selecciona la foto de nuevo. Tu imagen anterior se conserva.')
    :t('This file could not be decoded as an image. It may be damaged or use an unsupported format. Your previous image is unchanged.','No se pudo leer este archivo como imagen. Puede estar dañado o usar un formato no compatible. Tu imagen anterior se conserva.');
   status.dataset.state='error';
- } finally {input.disabled=false;input.value='';}
+ } finally {input.disabled=false;input.value='';pendingUploads--;}
 });
 $('clear-images').addEventListener('click',()=>{design.image=presets[design.layout].image;design.logo='';for(const id of ['photo-upload','logo-upload']) {$(id+'-status').textContent='';$(id+'-status').dataset.state='';}render();});
 $('download').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(design,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='jem-website-design.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
@@ -151,27 +171,32 @@ $('reset').addEventListener('click',()=>{if(!confirm(t('Start over? Download you
 $('studio-send').addEventListener('submit',async e=>{
  e.preventDefault();
  const form=e.currentTarget,button=form.querySelector('[type=submit]'),status=$('send-status'),label=button.textContent;
- button.disabled=true;button.textContent=t('Sending…','Enviando…');status.textContent='';
- const data=new FormData(form), shared=handoff();
- data.set('_subject','JEM Design Studio — '+design.brand);
- data.set(t('Open the visual design','Abrir el diseño visual'),shared.url);
- data.set(t('Business','Negocio'),design.brand);
- data.set(t('Design direction','Estilo'),presets[design.layout].name);
- data.set(t('Colors','Colores'),`${t('Accent','Acento')}: ${design.accent} / ${t('Background','Fondo')}: ${design.background}`);
- data.set(t('Typography','Tipografía'),design.font);
- data.set(t('Page sections, in order','Secciones, en orden'),design.order.filter(s=>design.sections.includes(s)).map(s=>sectionNames[s]).join(' → '));
- data.set(t('Headline','Título'),design.heading);
- data.set(t('Introduction','Introducción'),design.description);
- data.set(t('Button text','Texto del botón'),design.cta);
- if(design.sections.includes('services')) data.set(t('Services','Servicios'),design.serviceText);
- if(design.sections.includes('testimonials')) data.set(t('Testimonial text','Texto del testimonio'),design.testimonial);
- if(shared.uploads.length) data.set(t('Images to collect separately','Imágenes pendientes'),`${shared.uploads.join(', ')}. ${t('The visual link uses sample images instead. Ask the client for their saved JEM design file, then use Open file in the studio to restore the original images.','El enlace visual usa imágenes de muestra. Solicita el archivo de diseño JEM del cliente y ábrelo en el estudio para restaurar las imágenes originales.')}`);
+ if(button.disabled)return;
+ if(pendingUploads) {status.textContent=t('Please wait for your images to finish preparing, then send your design.','Espera a que las imágenes terminen de prepararse y envía tu diseño.');return;}
+ const snapshot=structuredClone(design),data=new FormData(form);
+ button.disabled=true;button.textContent=t('Sending your complete design…','Enviando tu diseño completo…');status.textContent='';
  try {
-  const response=await fetch(form.action,{method:'POST',body:data,headers:{Accept:'application/json'}});
-  if(!response.ok)throw Error();
-  status.textContent=t('Sent! JEM receives a visual preview link and your project brief.','¡Enviado! JEM recibe un enlace visual y el resumen de tu proyecto.')+(shared.uploads.length?' '+t('Your uploaded images are not in that link. Use Save file and send that file to JEM separately to include them.','Tus imágenes subidas no están en ese enlace. Guarda el archivo y envíalo a JEM por separado para incluirlas.'):'');
- } catch {
-  status.textContent=t('The design could not be sent. Your work is still here. Try again, or download the file and contact JEM through Let’s Talk.','No se pudo enviar. Tu trabajo sigue aquí. Intenta de nuevo o descarga el archivo y contacta a JEM desde Hablemos.');
+  const shared=await handoff(snapshot,data.get('_gotcha') || '');
+  data.set('_subject','JEM Design Studio — '+snapshot.brand);
+  data.set(t('Open the complete design','Abrir el diseño completo'),shared.url);
+  data.set(t('Business','Negocio'),snapshot.brand);
+  data.set(t('Design direction','Estilo'),presets[snapshot.layout].name);
+  data.set(t('Colors','Colores'),`${t('Accent','Acento')}: ${snapshot.accent} / ${t('Background','Fondo')}: ${snapshot.background}`);
+  data.set(t('Typography','Tipografía'),snapshot.font);
+  data.set(t('Page sections, in order','Secciones, en orden'),snapshot.order.filter(s=>snapshot.sections.includes(s)).map(s=>sectionNames[s]).join(' → '));
+  data.set(t('Headline','Título'),snapshot.heading);
+  data.set(t('Introduction','Introducción'),snapshot.description);
+  data.set(t('Button text','Texto del botón'),snapshot.cta);
+  if(snapshot.sections.includes('services')) data.set(t('Services','Servicios'),snapshot.serviceText);
+  if(snapshot.sections.includes('testimonials')) data.set(t('Testimonial text','Texto del testimonio'),snapshot.testimonial);
+  data.set(t('Images','Imágenes'),t('Preview photos and logo are included in the design link.','Las fotos de vista previa y el logo están incluidos en el enlace del diseño.'));
+  const response=await fetch(form.action,{method:'POST',body:data,headers:{Accept:'application/json'},signal:AbortSignal.timeout(20000)});
+  if(!response.ok)throw Error('NOTIFICATION_FAILED');
+  status.textContent=t('Sent! JEM receives your complete design, including your preview photos and logo. Nothing else needs to be sent separately.','¡Enviado! JEM recibe tu diseño completo, incluidas tus fotos de vista previa y logo. No necesitas enviar nada por separado.');
+ } catch(error) {
+  status.textContent=error.message==='RATE_LIMIT'
+   ?t('Please wait a minute before trying again. Your design and images are still saved here.','Espera un minuto antes de intentar de nuevo. Tu diseño e imágenes siguen guardados aquí.')
+   :t('Your complete design could not be delivered. Your design and images are still here. Please try again in a moment.','No se pudo entregar tu diseño completo. Tu diseño e imágenes siguen aquí. Intenta de nuevo en un momento.');
  } finally {button.disabled=false;button.textContent=label;}
 });
 if(reviewMode) {
@@ -182,6 +207,8 @@ if(reviewMode) {
  const edit=document.createElement('button');edit.className='btn';edit.type='button';edit.textContent=t('Edit a copy','Editar una copia');
  edit.addEventListener('click',()=>{reviewMode=false;main.classList.remove('studio-review');edit.remove();history.replaceState(null,'',location.pathname);sync();});
  main.querySelector('.studio-heading').append(edit);
+ const download=document.createElement('button');download.className='btn btn-secondary';download.type='button';download.textContent=t('Download design','Descargar diseño');
+ download.addEventListener('click',()=>$('download').click());main.querySelector('.studio-heading').append(download);
 }
 sync();
 if(linkError) $('save-status').textContent=t('This design link could not be opened. Ask for the saved design file.','No se pudo abrir este enlace. Solicita el archivo de diseño guardado.');

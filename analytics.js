@@ -3,6 +3,8 @@
   'use strict';
   const productionHosts = ['jemwebsolutions.com', 'www.jemwebsolutions.com'];
   if (window.self !== window.top || !productionHosts.includes(window.location.hostname)) return;
+  // Shared design links contain private capability tokens or encoded client content.
+  if (/^#(?:submission|design)=/.test(window.location.hash)) return;
   if (window.jemAnalyticsLoaded) return;
   window.jemAnalyticsLoaded = true;
 
