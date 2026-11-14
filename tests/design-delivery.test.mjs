@@ -19,10 +19,10 @@ async function harness(lang='en', options={}) {
     constructor(){this.data={name:'Alex',email:'alex@example.com',project:'A new website'};}
     get(key){return this.data[key] ?? null;} set(key,value){this.data[key]=value;}
   }
-  const context={document:{documentElement:{lang},getElementById:el,createElement:()=>el('new-button')},
+  const context={document:{documentElement:{lang},getElementById:el,createElement:tag=>tag==='canvas'?{width:0,height:0,getContext:()=>({clearRect(){},drawImage(){}}),toDataURL:()=>png}:el('new-button')},
     localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)},
     location:{href:'https://jemwebsolutions.com/design-studio',hash:options.hash || '',pathname:'/design-studio',reload(){}},history:{replaceState(){}},
-    structuredClone,Blob,URL,TextEncoder,TextDecoder,Uint8Array,btoa,atob,FormData,AbortSignal,setTimeout,clearTimeout,confirm:()=>true,console,
+    Image:class{naturalWidth=2400;naturalHeight=1600;async decode(){}},structuredClone,Blob,URL:class extends URL{static createObjectURL(){return 'blob:photo'}static revokeObjectURL(){}},TextEncoder,TextDecoder,Uint8Array,btoa,atob,FormData,AbortSignal,setTimeout,clearTimeout,confirm:()=>true,console,
     fetch:async(url,config={})=>{
       calls.push({url,config});
       if(url.startsWith('/.netlify/functions/save-design')) {
@@ -94,4 +94,48 @@ test('unavailable review links display an error instead of an unrelated default 
   assert.match(h.el('main').innerHTML,/Design unavailable/);
   assert.equal(h.el('preview').srcdoc,undefined);
   assert.equal(h.calls.length,1);
+});
+
+
+test('selecting multiple photos adds a visible gallery and preserves it in a review link',async()=>{
+  const h=await harness();
+  h.el('gallery-upload').files=[{name:'First.png',type:'image/png',size:4000000},{name:'Second.jpg',type:'image/jpeg',size:5000000}];
+  await h.el('gallery-upload').listeners.change();
+  let draft=JSON.parse(h.storage.get('jem-design-studio-v1'));
+  assert.deepEqual(draft.gallery.map(photo=>photo.name),['First.png','Second.jpg']);
+  assert(h.el('gallery-manager').innerHTML.includes('First.png'));
+  assert.match(h.el('gallery-count').textContent,/2 \/ 8/);
+  assert(h.el('preview').srcdoc.includes(png));
+  h.el('gallery-manager').listeners.click({target:{closest:()=>({dataset:{galleryIndex:'1',galleryAction:'up'}})}});
+  draft=JSON.parse(h.storage.get('jem-design-studio-v1'));
+  assert.deepEqual(draft.gallery.map(photo=>photo.name),['Second.jpg','First.png']);
+  await h.el('save-review').listeners.click();
+  assert.equal(h.calls.filter(c=>c.url.includes('formspree')).length,0);
+  assert.equal(h.saved.get('a'.repeat(64)).gallery.length,2);
+  assert.equal(h.el('saved-review-link').hidden,false);
+  assert.match(h.el('saved-review-link').href,/#submission=/);
+  h.el('gallery-manager').listeners.click({target:{closest:()=>({dataset:{galleryIndex:'0',galleryAction:'remove'}})}});
+  assert.equal(JSON.parse(h.storage.get('jem-design-studio-v1')).gallery.length,1);
+});
+
+test('gallery limits report an error and retain existing photos',async()=>{
+  const h=await harness();
+  h.el('gallery-upload').files=Array.from({length:9},(_,i)=>({name:`Photo${i}.png`,type:'image/png',size:2000}));
+  await h.el('gallery-upload').listeners.change();
+  assert.equal(h.el('gallery-upload-status').dataset.state,'error');
+  assert.equal(JSON.parse(h.storage.get('jem-design-studio-v1')).gallery.length,0);
+  h.el('gallery-upload').files=[{name:'Good.png',type:'image/png',size:2000},{name:'TooLarge.jpg',type:'image/jpeg',size:21*1024*1024}];
+  await h.el('gallery-upload').listeners.change();
+  assert.equal(JSON.parse(h.storage.get('jem-design-studio-v1')).gallery.length,1);
+  assert.match(h.el('gallery-upload-status').textContent,/TooLarge.jpg/);
+});
+
+test('gallery photos survive design-file export and import',async()=>{
+  const h=await harness(),design=await addImages(h);
+  design.gallery=[{src:png,name:'Restored gallery.png'}];
+  h.el('import-file').files=[{size:1000,text:async()=>JSON.stringify(design)}];
+  await h.el('import-file').listeners.change();
+  assert.deepEqual(JSON.parse(h.storage.get('jem-design-studio-v1')).gallery,design.gallery);
+  await h.submit();
+  assert.deepEqual(h.saved.get('a'.repeat(64)).gallery,design.gallery);
 });

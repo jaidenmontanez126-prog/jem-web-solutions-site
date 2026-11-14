@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createSaveHandler, createLoadHandler, validateDesign } from '../netlify/lib/design-storage.mjs';
 
 const png = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6WQAAAABJRU5ErkJggg==';
-const fixture = () => ({version:1,layout:'minimal',brand:'Montañez Diseño',heading:'A complete idea',description:'With the actual images.',cta:'Explore',font:'serif',accent:'#e32400',background:'#ffaa00',image:png,logo:png,sections:['gallery','contact'],order:['services','gallery','testimonials','contact'],serviceText:'Personal service',testimonial:'Sample text'});
+const fixture = () => ({version:1,layout:'minimal',brand:'Montañez Diseño',heading:'A complete idea',description:'With the actual images.',cta:'Explore',font:'serif',accent:'#e32400',background:'#ffaa00',image:png,logo:png,gallery:[],sections:['gallery','contact'],order:['services','gallery','testimonials','contact'],serviceText:'Personal service',testimonial:'Sample text'});
 const request = body => new Request('https://jemwebsolutions.com/.netlify/functions/save-design', {method:'POST',headers:{origin:'https://jemwebsolutions.com','content-type':'application/json'},body:JSON.stringify(body)});
 
 function memoryStore() {
@@ -50,7 +50,7 @@ test('only permits same-origin JSON saves and rejects honeypot submissions', asy
 
 test('bounds streamed body size even when content-length is missing', async () => {
   const save=createSaveHandler(()=>memoryStore());
-  const body=new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode('x'.repeat(800001)));controller.close();}});
+  const body=new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode('x'.repeat(2300001)));controller.close();}});
   const oversized=new Request('https://jemwebsolutions.com/api',{method:'POST',headers:{origin:'https://jemwebsolutions.com','content-type':'application/json'},body,duplex:'half'});
   assert.equal((await save(oversized)).status,413);
   const malformed=new Request('https://jemwebsolutions.com/api',{method:'POST',headers:{origin:'https://jemwebsolutions.com','content-type':'application/json'},body:'{broken'});
@@ -72,4 +72,22 @@ test('storage failure returns an error rather than a success or incomplete desig
   const broken=()=>{throw Error('Unavailable');};
   assert.equal((await createSaveHandler(broken)(request({design:fixture()}))).status,503);
   assert.equal((await createLoadHandler(broken)(new Request('https://jemwebsolutions.com/api?id='+'a'.repeat(64)))).status,503);
+});
+
+
+test('eight gallery photos preserve names, order and image contents in stored reviews', async () => {
+  const store=memoryStore(),save=createSaveHandler(()=>store),load=createLoadHandler(()=>store);
+  const design={...fixture(),gallery:Array.from({length:8},(_,i)=>({src:png,name:`Photo ${i+1}.png`}))};
+  const response=await save(request({design}));assert.equal(response.status,201);
+  const {id}=await response.json();
+  const restored=await load(new Request('https://jemwebsolutions.com/api?id='+id));
+  assert.deepEqual((await restored.json()).design.gallery,design.gallery);
+  for(const gallery of [Array(9).fill({src:png,name:'Extra.png'}),[{src:'https://evil.example/photo.jpg',name:'Bad'}],[{src:png,name:'x'.repeat(161)}],[{src:'assets/workspace.jpg',name:'Not an upload'}]]) {
+    assert.throws(()=>validateDesign({...fixture(),gallery}));
+  }
+});
+
+test('legacy designs without a gallery remain readable', () => {
+  const old=fixture();delete old.gallery;
+  assert.deepEqual(validateDesign(old).gallery,[]);
 });

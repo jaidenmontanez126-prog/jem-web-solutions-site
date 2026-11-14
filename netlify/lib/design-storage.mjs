@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto';
 const layouts = ['cinematic', 'editorial', 'bold', 'minimal'];
 const sections = ['services', 'gallery', 'testimonials', 'contact'];
 const samples = ['assets/luxury/residence.jpg', 'assets/luxury/fashion.jpg', 'assets/luxury/automotive.jpg', 'assets/workspace.jpg'];
-const maxBytes = 800000;
+const maxBytes = 2300000;
 const headers = {
   'Content-Type': 'application/json; charset=utf-8',
   'Cache-Control': 'private, no-store',
@@ -13,10 +13,10 @@ const headers = {
 };
 const reply = (status, body) => new Response(JSON.stringify(body), {status, headers});
 
-function validImage(value, optional) {
+function validImage(value, optional, limit = 360000) {
   if (value === '') return optional;
   if (samples.includes(value)) return true;
-  if (typeof value !== 'string' || value.length >= 360000) return false;
+  if (typeof value !== 'string' || value.length >= limit) return false;
   const match = /^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/]+={0,2})$/.exec(value);
   if (!match || match[2].length % 4) return false;
   const bytes = Buffer.from(match[2], 'base64');
@@ -47,6 +47,11 @@ export function validateDesign(raw) {
     if (!validImage(raw[field], field === 'logo')) throw Error('Invalid image');
     design[field] = raw[field];
   }
+  if (raw.gallery !== undefined && (!Array.isArray(raw.gallery) || raw.gallery.length > 8)) throw Error('Invalid gallery');
+  design.gallery = (raw.gallery || []).map(photo => {
+    if (!photo || typeof photo.name !== 'string' || photo.name.length > 160 || !validImage(photo.src, false, 160000) || samples.includes(photo.src)) throw Error('Invalid gallery photo');
+    return {src:photo.src, name:photo.name};
+  });
   return design;
 }
 
