@@ -38,7 +38,7 @@ async function harness(lang='en', options={}) {
     }};
   el('studio-send').action='https://formspree.io/f/mrerznbo';
   await vm.runInNewContext(source,context);
-  return {el,storage,calls,saved,images,downloads,state,context,submit:()=>el('studio-send').listeners.submit({preventDefault(){},currentTarget:el('studio-send')})};
+  return {el,storage,calls,saved,images,downloads,state,context,submit:()=>el('save-review').listeners.click()};
 }
 async function addImages(h) {
   const design=JSON.parse(h.storage.get('jem-design-studio-v1'));
@@ -49,7 +49,7 @@ async function addImages(h) {
 }
 
 for (const lang of ['en','es']) {
-  test(`${lang}: one click stores both images and emails a short complete-design link`,async()=>{
+  test(`${lang}: saves both images and offers a direct email with the complete design link`,async()=>{
     const h=await harness(lang),design=await addImages(h);
     await h.submit();
     assert.equal(h.calls.filter(c=>c.url==='/.netlify/functions/save-design').length,1);
@@ -57,14 +57,15 @@ for (const lang of ['en','es']) {
     manifest.image=h.images.get(new URL(manifest.image,'https://jemwebsolutions.com').searchParams.get('id'));
     manifest.logo=h.images.get(new URL(manifest.logo,'https://jemwebsolutions.com').searchParams.get('id'));
     assert.deepEqual(manifest,design);
-    const sent=h.calls.find(c=>c.url.includes('formspree')).config.body.data;
-    const link=sent[lang==='es'?'Abrir el diseño completo':'Open the complete design'];
-    assert.equal(new URL(link).hash,'#submission='+'a'.repeat(64));
-    assert(link.length<150);
-    assert(!('design_json' in sent));
-    assert(!('Images to collect separately' in sent));
-    assert.match(h.el('send-status').textContent,lang==='es'?/¡Enviado!/:/Sent!/);
-    assert.equal(h.el('studio-send').querySelector('[type=submit]').disabled,false);
+    assert.equal(h.calls.filter(c=>c.url.includes('formspree')).length,0);
+    const email=new URL(h.el('email-design').href);
+    assert.equal(email.pathname,'contact@jemwebsolutions.com');
+    assert.match(email.searchParams.get('body'),/#submission=aaaaaaaa/);
+    assert.match(email.searchParams.get('subject'),/Montañez/);
+    assert.equal(h.el('email-design').hidden,false);
+    assert(!h.el('main').innerHTML.includes('action="https://formspree'));
+    assert(!h.el('main').innerHTML.includes('type="submit"'));
+    assert.equal(h.el('save-review').disabled,false);
   });
 }
 
@@ -82,18 +83,16 @@ test('storage failures never send an incomplete email or erase the draft',async(
   const h=await harness();await addImages(h);const draft=h.storage.get('jem-design-studio-v1');h.state.saveOK=false;
   await h.submit();
   assert.equal(h.calls.filter(c=>c.url.includes('formspree')).length,0);
-  assert.match(h.el('send-status').textContent,/could not be delivered/);
+  assert.match(h.el('review-link-status').textContent,/could not be saved/);
   assert.equal(h.storage.get('jem-design-studio-v1'),draft);
-  assert.equal(h.el('studio-send').querySelector('[type=submit]').disabled,false);
+  assert.equal(h.el('save-review').disabled,false);
 });
 
-test('email retries reuse the stored design and preserve both images',async()=>{
-  const h=await harness();await addImages(h);h.state.mailOK=false;
-  await h.submit();assert.match(h.el('send-status').textContent,/could not be delivered/);
-  h.state.mailOK=true;await h.submit();
+test('recreating a link reuses the stored design without sending notifications',async()=>{
+  const h=await harness();await addImages(h);
+  await h.submit();await h.submit();
   assert.equal(h.calls.filter(c=>c.url==='/.netlify/functions/save-design').length,1);
-  assert.equal(h.calls.filter(c=>c.url.includes('formspree')).length,2);
-  assert.match(h.el('send-status').textContent,/Sent!/);
+  assert.equal(h.calls.filter(c=>c.url.includes('formspree')).length,0);
 });
 
 test('unavailable review links display an error instead of an unrelated default design',async()=>{
@@ -159,7 +158,7 @@ test('large collections upload as individual photos, then one small design manif
  assert.equal(manifest.gallery.length,150);
  assert(h.calls.filter(c=>c.url==='/.netlify/functions/save-design-image').length>=150);
  assert(manifest.gallery.every(photo=>photo.src.startsWith('/.netlify/functions/load-design-image?id=')));
- assert.equal(h.calls.filter(c=>c.url.includes('formspree')).length,1);
+ assert.equal(h.calls.filter(c=>c.url.includes('formspree')).length,0);
  const write=h.calls.find(c=>c.url==='/.netlify/functions/save-design');
  assert(write.config.body.length<50000);
 });
@@ -170,7 +169,7 @@ test('an image upload failure never sends a manifest or an incomplete email',asy
  assert.equal(h.calls.filter(c=>c.url==='/.netlify/functions/save-design').length,0);
  assert.equal(h.calls.filter(c=>c.url.includes('formspree')).length,0);
  assert.equal(h.storage.get('jem-design-studio-v1'),before);
- assert.match(h.el('send-status').textContent,/could not be delivered/);
+ assert.match(h.el('review-link-status').textContent,/could not be saved/);
 });
 
 
