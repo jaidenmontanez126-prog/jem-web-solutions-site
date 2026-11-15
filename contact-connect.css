@@ -1,0 +1,24 @@
+/* Direct contact and social links, shared by both languages. */
+.connect-panel{margin-top:32px;padding-top:26px}
+.connect-panel>.section-label{margin-bottom:8px;font-size:10px;letter-spacing:.16em}
+.connect-row{display:flex;align-items:center;gap:16px;min-height:96px;padding:20px 0;border-bottom:1px solid var(--border-soft);color:var(--text-main)}
+.connect-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:var(--surface);color:var(--accent)}
+.connect-icon svg{width:22px;height:22px}
+.connect-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
+.connect-name{font-size:16px;font-weight:650;letter-spacing:-.02em}
+.connect-detail{font-size:13px;color:var(--text-soft)}
+.connect-actions{display:flex;gap:8px;margin-left:auto}
+.connect-actions a{display:grid;place-items:center;min-height:40px;min-width:60px;padding:8px 14px;border:1px solid var(--border-soft);border-radius:24px;font-size:12px;font-weight:600;transition:background .2s,color .2s}
+.connect-actions a:first-child{background:var(--button-bg);color:var(--button-text);border-color:transparent}
+.connect-arrow{margin-left:auto;font-size:24px;color:var(--accent);transition:transform .2s}
+.connect-whatsapp:hover .connect-arrow{transform:translate(3px,-3px)}
+.connect-follow{padding-top:24px}
+.connect-follow>p{font-size:12px;color:var(--text-soft);margin-bottom:14px}
+.connect-socials{display:flex;gap:12px;flex-wrap:wrap}
+.connect-socials a{display:flex;align-items:center;gap:10px;padding:12px 16px;border:1px solid var(--border-soft);border-radius:28px;font-size:13px;transition:background .2s,border-color .2s}
+.connect-socials svg{width:18px;height:18px;color:var(--accent)}
+.connect-socials a>span:last-child{margin-left:8px;color:var(--text-soft)}
+.connect-socials a:hover,.connect-actions a:hover{border-color:var(--accent);background:var(--button-bg);color:var(--button-text)}
+.connect-panel a:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+@media(max-width:420px){.connect-row{gap:12px}.connect-actions{gap:5px}.connect-actions a{min-width:48px;padding:8px 10px}.connect-icon{flex-basis:36px;width:36px;height:36px}.connect-detail{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.connect-panel a,.connect-arrow{transition:none}}
