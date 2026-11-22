@@ -1,35 +1,4 @@
-// Theme and navigation stay usable without animation or third-party libraries.
 const isSpanish = document.documentElement.lang === 'es';
-const themeToggle = document.getElementById('theme-toggle');
-const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
-let storedTheme;
-try { storedTheme = localStorage.getItem('theme'); } catch {}
-function updateTheme(light) {
-  document.body.classList.toggle('light-mode', light);
-  if (themeToggle) themeToggle.textContent = isSpanish ? (light ? 'Oscuro' : 'Claro') : (light ? 'Dark' : 'Light');
-}
-function hasManualTheme() {
-  return storedTheme === 'light' || storedTheme === 'dark';
-}
-function applyThemePreference() {
-  updateTheme(hasManualTheme() ? storedTheme === 'light' : systemTheme.matches);
-}
-applyThemePreference();
-systemTheme.addEventListener('change', () => {
-  if (!hasManualTheme()) applyThemePreference();
-});
-window.addEventListener('storage', event => {
-  if (event.storageArea === localStorage && (event.key === 'theme' || event.key === null)) {
-    storedTheme = event.newValue;
-    applyThemePreference();
-  }
-});
-themeToggle?.addEventListener('click', () => {
-  const light = !document.body.classList.contains('light-mode');
-  storedTheme = light ? 'light' : 'dark';
-  updateTheme(light);
-  try { localStorage.setItem('theme', storedTheme); } catch {}
-});
 const menuToggle = document.getElementById('menu-toggle-button');
 const primaryNavigation = document.getElementById('primary-navigation');
 const menuOverlay = document.getElementById('menu-overlay');

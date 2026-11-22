@@ -1,6 +1,7 @@
 /* JEM — a small studio with big possibilities. */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap');
 :root {
+  color-scheme:dark;
   --bg-main:#101114;
   --bg-card:#191b20;
   --surface:#15171b;
@@ -28,16 +29,19 @@ body {
   font:15px/1.65 'DM Sans',Arial,sans-serif;
   -webkit-font-smoothing:antialiased
 }
-body.light-mode {
-  --bg-main:#f4f4ef;
-  --bg-card:#fff;
-  --surface:#eaece8;
-  --text-main:#192027;
-  --text-soft:#58616d;
-  --border-soft:#19202722;
-  --accent:#3855c5;
-  --button-bg:#263c9c;
-  --button-text:#fff
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme:light;
+    --bg-main:#f4f4ef;
+    --bg-card:#fff;
+    --surface:#eaece8;
+    --text-main:#192027;
+    --text-soft:#58616d;
+    --border-soft:#19202722;
+    --accent:#3855c5;
+    --button-bg:#263c9c;
+    --button-text:#fff
+  }
 }
 a {
   color:inherit;
@@ -115,8 +119,10 @@ section[id],article[id] {
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px)
 }
-body.light-mode .navbar {
-  background:rgba(244,244,239,.94)
+@media (prefers-color-scheme: light) {
+  .navbar {
+    background:rgba(244,244,239,.94)
+  }
 }
 .logo img {
   width:136px;
@@ -126,11 +132,15 @@ body.light-mode .navbar {
 .logo-light {
   display:none
 }
-body.light-mode .logo-dark {
-  display:none
+@media (prefers-color-scheme: light) {
+  .logo-dark {
+    display:none
+  }
 }
-body.light-mode .logo-light {
-  display:block
+@media (prefers-color-scheme: light) {
+  .logo-light {
+    display:block
+  }
 }
 .nav-links {
   display:flex;
@@ -168,13 +178,6 @@ body.light-mode .logo-light {
   gap:16px;
   align-items:center;
   margin-left:2px
-}
-.theme-toggle {
-  background:transparent;
-  border:0;
-  font-size:11px;
-  color:var(--text-soft);
-  padding:8px
 }
 .languages {
   display:flex;
@@ -1350,9 +1353,6 @@ h1 em {
     margin:12px 0 0;
     border-top:1px solid var(--border-soft);
     padding-top:12px
-  }
-  .theme-toggle {
-    font-size:12px
   }
   .languages {
     font-size:12px;
