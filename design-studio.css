@@ -2,7 +2,7 @@
 
 .studio-review .studio-controls,.studio-review .studio-send{display:none}.studio-review .studio-layout{grid-template-columns:minmax(0,1fr)}.studio-review .studio-preview{position:static}.studio-review .studio-canvas iframe{height:78vh;min-height:550px}.studio-review .studio-tag{display:none}
 
-.studio-controls input[hidden]{display:none}.upload-status{font-size:12px;line-height:1.5;margin-top:7px;overflow-wrap:anywhere}.upload-status:empty{display:none}.upload-status[data-state=error]{color:#f58a78}body.light-mode .upload-status[data-state=error]{color:#a62a18}.upload-status[data-state=success]{color:var(--accent)}
+.studio-controls input[hidden]{display:none}.upload-status{font-size:12px;line-height:1.5;margin-top:7px;overflow-wrap:anywhere}.upload-status:empty{display:none}.upload-status[data-state=error]{color:#f58a78}@media (prefers-color-scheme: light){.upload-status[data-state=error]{color:#a62a18}}.upload-status[data-state=success]{color:var(--accent)}
 
 .studio-trap{display:none!important}.studio-review .studio-heading{flex-wrap:wrap}
 
