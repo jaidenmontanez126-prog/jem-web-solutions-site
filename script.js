@@ -16,7 +16,7 @@ primaryNavigation?.querySelectorAll('a').forEach(link => link.addEventListener('
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && menuToggle?.getAttribute('aria-expanded') === 'true') { setMenu(false); menuToggle.focus(); }
   if (event.key === 'Tab' && menuToggle?.getAttribute('aria-expanded') === 'true') {
-    const items = [menuToggle, ...primaryNavigation.querySelectorAll('a, button, select')];
+    const items = [menuToggle, ...primaryNavigation.querySelectorAll('a, button')];
     const first = items[0], last = items[items.length - 1];
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }

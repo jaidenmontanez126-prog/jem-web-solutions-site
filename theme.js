@@ -26,14 +26,24 @@
   } catch {}
 
   document.addEventListener('DOMContentLoaded', () => {
-    const picker = document.getElementById('theme-picker');
-    picker.value = choice;
-    picker.addEventListener('change', () => {
-      applyTheme(picker.value);
-      try {
-        if (choice === 'system') localStorage.removeItem(storageKey);
-        else localStorage.setItem(storageKey, choice);
-      } catch {}
+    const buttons = document.querySelectorAll('[data-theme-choice]');
+
+    function updateButtons() {
+      buttons.forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.themeChoice === choice));
+      });
+    }
+
+    updateButtons();
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        applyTheme(button.dataset.themeChoice);
+        updateButtons();
+        try {
+          if (choice === 'system') localStorage.removeItem(storageKey);
+          else localStorage.setItem(storageKey, choice);
+        } catch {}
+      });
     });
   });
 })();
