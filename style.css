@@ -1,18 +1,24 @@
 /* JEM — a small studio with big possibilities. */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap');
 :root {
-  color-scheme:dark;
-  --bg-main:#101114;
-  --bg-card:#191b20;
-  --surface:#15171b;
-  --text-main:#f5f5f1;
-  --text-soft:#a5a8b2;
-  --border-soft:#ffffff16;
-  --accent:#b9c7ff;
+  color-scheme:light dark;
+  --bg-main:light-dark(#f4f4ef, #101114);
+  --bg-card:light-dark(#fff, #191b20);
+  --surface:light-dark(#eaece8, #15171b);
+  --text-main:light-dark(#192027, #f5f5f1);
+  --text-soft:light-dark(#58616d, #a5a8b2);
+  --border-soft:light-dark(#19202722, #ffffff16);
+  --accent:light-dark(#3855c5, #b9c7ff);
   --blue:#4565ef;
-  --button-bg:#d0daff;
-  --button-text:#10152a;
+  --button-bg:light-dark(#263c9c, #d0daff);
+  --button-text:light-dark(#fff, #10152a);
   --max:1280px
+}
+:root[data-theme="light"] {
+  color-scheme:light
+}
+:root[data-theme="dark"] {
+  color-scheme:dark
 }
 * {
   box-sizing:border-box;
@@ -28,20 +34,6 @@ body {
   color:var(--text-main);
   font:15px/1.65 'DM Sans',Arial,sans-serif;
   -webkit-font-smoothing:antialiased
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    color-scheme:light;
-    --bg-main:#f4f4ef;
-    --bg-card:#fff;
-    --surface:#eaece8;
-    --text-main:#192027;
-    --text-soft:#58616d;
-    --border-soft:#19202722;
-    --accent:#3855c5;
-    --button-bg:#263c9c;
-    --button-text:#fff
-  }
 }
 a {
   color:inherit;
@@ -114,15 +106,10 @@ section[id],article[id] {
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(16,17,20,.94);
+  background:light-dark(rgba(244,244,239,.94), rgba(16,17,20,.94));
   border-bottom:1px solid var(--border-soft);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px)
-}
-@media (prefers-color-scheme: light) {
-  .navbar {
-    background:rgba(244,244,239,.94)
-  }
 }
 .logo img {
   width:136px;
@@ -133,14 +120,20 @@ section[id],article[id] {
   display:none
 }
 @media (prefers-color-scheme: light) {
-  .logo-dark {
+  :root:not([data-theme]) .logo-dark {
     display:none
   }
 }
 @media (prefers-color-scheme: light) {
-  .logo-light {
+  :root:not([data-theme]) .logo-light {
     display:block
   }
+}
+:root[data-theme="light"] .logo-dark {
+  display:none
+}
+:root[data-theme="light"] .logo-light {
+  display:block
 }
 .nav-links {
   display:flex;
@@ -178,6 +171,16 @@ section[id],article[id] {
   gap:16px;
   align-items:center;
   margin-left:2px
+}
+.theme-picker {
+  color:var(--text-main);
+  background:var(--bg-card);
+  border:1px solid var(--border-soft);
+  border-radius:6px;
+  min-height:32px;
+  padding:3px 5px;
+  font-size:12px;
+  cursor:pointer
 }
 .languages {
   display:flex;
